@@ -45,12 +45,15 @@ module.exports = {
       },
     },}]
   },
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
       chainId: 1337,
+      gasPrice: 225000000000,
       forking: {
-        url: "https://bsc-dataseed3.ninicoin.io",
-      }
+          url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API}`,
+          enabled: true,
+      },
     },
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_API}`,
@@ -72,14 +75,14 @@ module.exports = {
     disambiguatePaths: false,
     runOnCompile: true,
     strict: true,
-    only: [':Staking$',':HESTOKEN$'],
+    only: [':Staking$',':HESTOKEN$',':IUniswapV2Router02$'],
   },
 
   abiExporter: {
     path: '../frontend/src/contract',
     runOnCompile: true,
     clear: true,
-    only: [':Staking$',':HESTOKEN$',':IERC20Metadata$'],
+    only: [':Staking$',':HESTOKEN$',':IERC20Metadata$',':IUniswapV2Router02$'],
     flat: true,
     spacing: 2,
     pretty: true,

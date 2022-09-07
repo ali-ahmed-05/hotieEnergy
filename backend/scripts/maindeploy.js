@@ -10,15 +10,17 @@ const { json } = require("hardhat/internal/core/params/argumentTypes");
 // This is a script for deploying your contracts. You can adapt it to deploy
 // yours, or create new ones.
 
+let router_Address = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
+
 async function main() {
-  // This is just a convenience check
-  // if (network.name === "hardhat") {
-  //   console.warn(
-  //     "You are trying to deploy a contract to the Hardhat Network, which" +
-  //       "gets automatically created and destroyed every time. Use the Hardhat" +
-  //       " option '--network localhost'"
-  //   );
-  // }
+ // This is just a convenience check
+  if (network.name === "hardhat") {
+    console.warn(
+      "You are trying to deploy a contract to the Hardhat Network, which" +
+        "gets automatically created and destroyed every time. Use the Hardhat" +
+        " option '--network localhost'"
+    );
+  }
 
   // ethers is avaialble in the global scope
   let nFT
@@ -48,16 +50,16 @@ async function main() {
 
   let _value = await ethers.utils.parseEther('10000000')
 
-   await busd.setRouterAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E", {value :_ETHvalue })  //  
+   await busd.setRouterAddress(router_Address, {value :_ETHvalue })  //  
    await busd.addLiquidity(_value, _ETHvalue )
 
-  await hestoken.setRouterAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E")
+  await hestoken.setRouterAddress(router_Address)
 
   await hestoken.excludeFromFee(staking.address)
   await hestoken.excludeFromReward(staking.address)
 
 
-  await staking.setRouterAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E")
+  await staking.setRouterAddress(router_Address)
   await staking.setHESTAddress(hestoken.address)
 
   _value = await ethers.utils.parseUnits('1000' , await hestoken.decimals())
@@ -69,7 +71,9 @@ async function main() {
   await staking.addLiquidity(busd.address)
 
   await staking.setRewardTokenAddress(busd.address)
-
+  
+  console.log(staking.address)
+  console.log(hestoken.address)
     
   saveFrontendFiles(staking , hestoken)
    
@@ -86,6 +90,7 @@ function saveFrontendFiles(nFT) {
   let config = `
  export const staking_addr = "${nFT.address}"
  export const hestoken_addr = "${hestoken.address}"
+ export const router_addr = "${router_Address}"
 `
 
   let data = JSON.stringify(config)
