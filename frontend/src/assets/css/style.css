@@ -1237,3 +1237,20 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield !important;
 }
+.stable-coin-page .wallet-blnc{
+    display: block;
+}
+.stable-input-box .small-btn{
+   margin-top: 1.5rem;
+}
+.stable-input-box div{
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    width: 100%;
+}
+.form-control:focus{
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--green);
+}

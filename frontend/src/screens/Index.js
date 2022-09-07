@@ -9,4 +9,6 @@ import Partners from './Partners';
 import Team from './Team';
 import Admin from './Admin';
 import AdjustPool from './admin/AdjustPools';
-export {BuyHes,TokenOverview,Payments,News,Disclaimer,Partners,Team,Admin,Stake,Calculator,AdjustPool}
+import ChangeStableCoin from './admin/ChangeStableCoin';
+export {BuyHes,TokenOverview,Payments,News,Disclaimer,Partners,Team,Admin,Stake,
+    Calculator,AdjustPool,ChangeStableCoin}

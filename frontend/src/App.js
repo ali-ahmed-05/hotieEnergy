@@ -2,7 +2,8 @@ import { useState } from 'react';
 import './App.css';
 import Home from './components/Home';
 import {SideBar,Header,Footer} from './components/Index';
-import {BuyHes,TokenOverview,Payments,News,Disclaimer,Partners,Team,Admin,Stake,Calculator, AdjustPool} from './screens/Index';
+import {BuyHes,TokenOverview,Payments,News,Disclaimer,
+  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin} from './screens/Index';
 import { useEagerConnect, useInactiveListener } from './hooks/useEagerConnect';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/team" element={<Team/>}  />
         <Route path="/admin" element={<Admin/>}  />
         <Route path="/admin/adjust/pool" element={<AdjustPool/>}  />
+        <Route path="/admin/change-stable-coin" element={<ChangeStableCoin/>}  />
         </Routes>
         <Footer/>
       </div>

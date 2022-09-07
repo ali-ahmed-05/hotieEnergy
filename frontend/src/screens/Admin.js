@@ -108,6 +108,14 @@ function Admin() {
                                 </Link>
 
                             </li>
+                            <li>
+                                <Link to={'/admin/change-stable-coin'}>
+
+                                <img src={Transfer} />
+                                <span>Change <br /> Stable Coin</span>
+                                </Link>
+
+                            </li>
                         </ul>
                     </Col>
                 </Row>
