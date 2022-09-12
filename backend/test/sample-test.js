@@ -10,6 +10,10 @@ async function mineNBlocks(n) {
 
 describe("HOTIE ENERGY",  function ()  {
 
+
+  
+   
+
   
   let BUSD
   let busd
@@ -43,16 +47,21 @@ describe("HOTIE ENERGY",  function ()  {
 
     let _value = await ethers.utils.parseEther('10000000')
 
-     await busd.setRouterAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E", {value :_ETHvalue })  //  
-     await busd.addLiquidity(_value, _ETHvalue )
+    let tx = await busd.setRouterAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D", {value :_ETHvalue })  //  
+    await tx.wait()
+    tx = await busd.addLiquidity(_value, _ETHvalue )
+    await tx.wait()
 
-    await hestoken.setRouterAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E")
+    tx =await hestoken.setRouterAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
+    await tx.wait()
 
-    await hestoken.excludeFromFee(staking.address)
-    await hestoken.excludeFromReward(staking.address)
+    tx =await hestoken.excludeFromFee(staking.address)
+    await tx.wait()
+    tx =await hestoken.excludeFromReward(staking.address)
+    await tx.wait()
 
 
-    await staking.setRouterAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E")
+    await staking.setRouterAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
     await staking.setHESTAddress(hestoken.address)
 
     _value = await ethers.utils.parseUnits('1000' , await hestoken.decimals())
@@ -75,7 +84,7 @@ describe("HOTIE ENERGY",  function ()  {
     console.log("pair address : ", (await staking.getPair(hestoken.address , busd.address)).toString())
 
     console.log("per1 hest before" , (await hestoken.balanceOf(per1.address)).toString())
-    0x10ED43C718714eb63d5aA57B78B54704E256024E
+    
   });
   
  
@@ -131,42 +140,42 @@ describe("HOTIE ENERGY",  function ()  {
 
   });
 
-  // it("loop the process", async function () {
+  // // it("loop the process", async function () {
 
-  //   for (let index = 0; index < 10 ; index++) {
+  // //   for (let index = 0; index < 10 ; index++) {
       
-  //     let initialize = await staking.initiatePools([10,10,10,10,10,10,10,10],[1,1,1,100,100,100,100,100],[200,200,200,200,200,200,200,200])
-  //     await initialize.wait()
+  // //     let initialize = await staking.initiatePools([10,10,10,10,10,10,10,10],[1,1,1,100,100,100,100,100],[200,200,200,200,200,200,200,200])
+  // //     await initialize.wait()
 
-  //     let _value = await ethers.utils.parseEther('100')
-  //     await busd.approve(staking.address , _value)
-  //     let add = await staking.addRewardToken(_value)
-  //     await add.wait()
+  // //     let _value = await ethers.utils.parseEther('100')
+  // //     await busd.approve(staking.address , _value)
+  // //     let add = await staking.addRewardToken(_value)
+  // //     await add.wait()
 
-  //     let info = await staking.pool(1,1)
-  //   console.log(info)
-  //   _value = await ethers.utils.parseUnits('3',  await hestoken.decimals() )
+  // //     let info = await staking.pool(1,1)
+  // //   console.log(info)
+  // //   _value = await ethers.utils.parseUnits('3',  await hestoken.decimals() )
 
-  //   await hestoken.approve(staking.address , _value)
-  //    add = await staking.stake(1)
-  //   await add.wait()
+  // //   await hestoken.approve(staking.address , _value)
+  // //    add = await staking.stake(1)
+  // //   await add.wait()
 
-  //   _value = await ethers.utils.parseUnits('1',  await hestoken.decimals() )
+  // //   _value = await ethers.utils.parseUnits('1',  await hestoken.decimals() )
 
-  //   let approve = await hestoken.connect(per1).approve(staking.address , _value)
-  //   await approve.wait()
-  //   add = await staking.connect(per1).stake(1)
-  //   await add.wait()
+  // //   let approve = await hestoken.connect(per1).approve(staking.address , _value)
+  // //   await approve.wait()
+  // //   add = await staking.connect(per1).stake(1)
+  // //   await add.wait()
 
-  //   let reward = await staking.calcRewards(_.address,1,1)
-  //   console.log("reward before" , reward.toString())
-  //   await mineNBlocks(24 * 30)
-  //   reward = await staking.calcRewards(_.address,1,1)
-  //   console.log("reward after" , reward.toString())
+  // //   let reward = await staking.calcRewards(_.address,1,1)
+  // //   console.log("reward before" , reward.toString())
+  // //   await mineNBlocks(24 * 30)
+  // //   reward = await staking.calcRewards(_.address,1,1)
+  // //   console.log("reward after" , reward.toString())
       
-  //   }
+  // //   }
       
-  //   });
+  // //   });
 
   it("Should initialize", async function () {
     
@@ -187,46 +196,46 @@ describe("HOTIE ENERGY",  function ()  {
     
   });
 
-  // it("Should stake into Pools", async function () {
+  // // it("Should stake into Pools", async function () {
 
-  //   let info = await staking.pool(1,2)
-  //   console.log(info)
-  //   let _value = await ethers.utils.parseUnits('300',  await hestoken.decimals() )
+  // //   let info = await staking.pool(1,2)
+  // //   console.log(info)
+  // //   let _value = await ethers.utils.parseUnits('300',  await hestoken.decimals() )
 
-  //   await hestoken.approve(staking.address , _value)
-  //   let add = await staking.stake(1)
-  //   await add.wait()
+  // //   await hestoken.approve(staking.address , _value)
+  // //   let add = await staking.stake(1)
+  // //   await add.wait()
 
-  //   _value = await ethers.utils.parseUnits('100',  await hestoken.decimals() )
+  // //   _value = await ethers.utils.parseUnits('100',  await hestoken.decimals() )
 
-  //   let approve = await hestoken.connect(per1).approve(staking.address , _value)
-  //   await approve.wait()
-  //   add = await staking.connect(per1).stake(1)
-  //   await add.wait()
+  // //   let approve = await hestoken.connect(per1).approve(staking.address , _value)
+  // //   await approve.wait()
+  // //   add = await staking.connect(per1).stake(1)
+  // //   await add.wait()
 
-  //   let reward = await staking.calcRewards(_.address,1,2)
-  //   console.log("reward before" , reward.toString())
-  //   await mineNBlocks(24 * 30)
-  //   reward = await staking.calcRewards(_.address,1,2)
-  //   console.log("reward after" , reward.toString())
+  // //   let reward = await staking.calcRewards(_.address,1,2)
+  // //   console.log("reward before" , reward.toString())
+  // //   await mineNBlocks(24 * 30)
+  // //   reward = await staking.calcRewards(_.address,1,2)
+  // //   console.log("reward after" , reward.toString())
 
-  //  // await staking.calcRewards(_.address,1,2)    
-  // });
+  // //  // await staking.calcRewards(_.address,1,2)    
+  // // });
 
-  // it("Should withdraw from Pool", async function () {
+  // // it("Should withdraw from Pool", async function () {
 
-  //   console.log("per1 Busd before" , (await busd.balanceOf(per1.address)).toString())
-  //   console.log("per1 stakeInfo before" , (await staking.stakeInfo(per1.address,1,1)))
+  // //   console.log("per1 Busd before" , (await busd.balanceOf(per1.address)).toString())
+  // //   console.log("per1 stakeInfo before" , (await staking.stakeInfo(per1.address,1,1)))
     
-  //   await staking.withdrawRewards(per1.address , 1 , 1)
+  // //   await staking.withdrawRewards(per1.address , 1 , 1)
 
-  //   //await staking.withdrawRewards(per1.address , false , [1,2,3,4])(address account , uint8 _id , uint256 _Poolno )
-  //   console.log("per1 Busd after" , (await busd.balanceOf(per1.address)).toString())
+  // //   //await staking.withdrawRewards(per1.address , false , [1,2,3,4])(address account , uint8 _id , uint256 _Poolno )
+  // //   console.log("per1 Busd after" , (await busd.balanceOf(per1.address)).toString())
 
-  //   console.log("per1 stakeInfo after" , (await staking.stakeInfo(per1.address,1,1)))
+  // //   console.log("per1 stakeInfo after" , (await staking.stakeInfo(per1.address,1,1)))
    
     
-  // });
+  // // });
 
 
   it("Should clubRewards into Pools", async function () {

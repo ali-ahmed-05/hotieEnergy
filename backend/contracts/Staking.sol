@@ -51,6 +51,8 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         uint256 pendingRewards;
     }mapping(address => mapping(uint256 =>mapping(uint256 => StakeInfo))) public stakeInfo;
 
+    mapping(address => uint256) public stakedBalance;
+
     
     function setRewardTokenAddress(address _token) public onlyOwner { 
         require(_token != address(0),"invalid address");
@@ -399,6 +401,8 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     }
     
 }
+
+
 
 // todo :
 
