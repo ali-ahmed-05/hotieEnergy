@@ -1,8 +1,108 @@
 import { Col, Container, Row } from "react-bootstrap";
 import HorizontalLogo from '../assets/images/horizontal-logo.png'
 import {HistoricGraph} from '../components/Index';
+import { memo, useEffect, useState } from "react";
+import apis from "../services";
+import moment from "moment";
+import countdown from 'moment-countdown';
+import { DatePeriodFilter } from "igniteui-react-excel";
+
+import {staking_addr , hestoken_addr , router_addr} from '../contract/addresses'
+import ABI from '../contract/Staking.json'
+
+import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
+import Web3Modal from 'web3modal'
 
 function Payments(){
+
+    const {
+        connector,
+        library,
+        account,
+        chainId,
+        activate,
+        deactivate,
+        active,
+        error
+    } = useWeb3React();
+
+    const [timecount , setTimecount] = useState('')
+
+    const loadProvider = async () => {
+        try {
+            const web3Modal = new Web3Modal();
+            const connection = await web3Modal.connect();
+            const provider = new ethers.providers.Web3Provider(connection);
+            return provider.getSigner();
+        }
+        catch (e) {
+            console.log("loadProvider: ", e)
+        }
+    }
+
+    const currentPoolTime = async () =>{
+        try {
+
+            let signer = await loadProvider()
+            let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+            let currentPool = await stakingContract.currentPool()
+            let pool = await stakingContract.pool(1,currentPool)
+            
+            currentPool = Number(pool[6].toString())
+            console.log("currentPool",currentPool)
+            return currentPool
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const countTime = async ()=> {
+        try {
+
+            const {data} = await apis.getBlock(await currentPoolTime())
+            const timeStamp = data?.result?.timeStamp || 0;
+            let oneMonthUNIX  = 2629743
+            let totalTime = Number(timeStamp) + oneMonthUNIX
+            console.log("NOW" ,moment().unix())
+            if(totalTime < moment().unix())
+            totalTime = 0 
+
+            console.log(totalTime)
+            let date = moment.unix(Number(totalTime));
+            //a.to(date)
+
+            console.log("2timeStamp" ,moment().countdown(date)) 
+            console.log("moment().countdown(date).value" ,moment().countdown(date).value) 
+
+            if(moment().countdown(date).value > 0){
+                console.log("INNS")
+            
+            const id = setInterval(() => {
+                
+                 setTimecount(moment().countdown(date))
+
+                // console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                // console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                // console.log("3timeStamp" ,moment().countdown(date , countdown.MONTHS|countdown.WEEKS, NaN, 2).toString()) 
+
+               
+              }, 1000);
+            }
+        }
+         catch (error) {
+            console.log(error)
+        }
+    }
+
+    
+
+    useEffect(
+        async ()=> {
+            await countTime()
+        }    
+    ,[])
+
     return <>
             <Container fluid className="main-height">
                 <div className="page-margin-top">
@@ -96,10 +196,10 @@ function Payments(){
                                    <span>SEC</span>
                                    </div>
                                    <div className="green-background timer-section">
-                                       <span>00</span>
-                                       <span>00</span>
-                                       <span>00</span>
-                                       <span>00</span>
+                                       <span>{timecount.days}</span>
+                                       <span>{timecount.hours}</span>
+                                       <span>{timecount.minutes}</span>
+                                       <span>{timecount.seconds}</span>
                                    </div>
                                </div>
                                </div>
