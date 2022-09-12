@@ -1254,3 +1254,8 @@ input[type=number] {
     box-shadow: none;
     border: 1px solid var(--green);
 }
+.select-month-main{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

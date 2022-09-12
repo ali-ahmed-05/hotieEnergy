@@ -3,7 +3,7 @@ import './App.css';
 import Home from './components/Home';
 import {SideBar,Header,Footer} from './components/Index';
 import {BuyHes,TokenOverview,Payments,News,Disclaimer,
-  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin} from './screens/Index';
+  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin, PoolDetail} from './screens/Index';
 import { useEagerConnect, useInactiveListener } from './hooks/useEagerConnect';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
 
@@ -29,6 +29,7 @@ function App() {
         <Route path="/token-overview" element={<TokenOverview/>}  />
         <Route path="/coming-payments" element={<Payments/>}  />
         <Route path="/stake" element={<Stake/>}  />
+        <Route path="/pool-detail/:id" element={<PoolDetail/>}  />
         <Route path="/calculator" element={<Calculator/>}  />
         <Route path="/news" element={<News/>}  />
         <Route path="/disclaimer" element={<Disclaimer/>}  />

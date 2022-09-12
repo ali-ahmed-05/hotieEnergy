@@ -2,9 +2,11 @@ import { Col, Container, Row,Table, Form } from "react-bootstrap";
 import Hest from '../assets/images/hest.png'
 import Minipooltable from "../components/MiniPoolTable";
 import whitepaper from '../assets/WHITEPAPER.pdf';
+import { useNavigate } from "react-router-dom";
 
 
 function Stake(){
+    const navigate = useNavigate();
     return <>
             <Container fluid className="main-height">
 
@@ -49,12 +51,26 @@ function Stake(){
                                             <button class="custom-btn secondary-btn">Unstake</button>
 
                                         </div>
+                                        <div className="text-center">
+                                            <p className="light-p">Total Reward Balance:</p>
+                                            <div className="hest-to-usd py-2">
+                                                <span>300</span>
+                                                <span>USD</span>
+                                            </div>
 
+                                        <div className="d-flex flex-column">
+                                
+                                            <button class="custom-btn secondary-btn mb-3">Compound</button>
+                                            <button class="custom-btn secondary-btn">Redeem</button>
+
+                                        </div>
+
+                                        </div>
                                     </div>
 
-                                    <div className="wallet-blnc">
+                                    {/* <div className="wallet-blnc">
 
-                                        <div className="text-center">
+                                         <div className="text-center">
                                             <p className="bold-p">Recommended MiniPools:</p>
                                         
                                         <div className="advance-pool">
@@ -73,9 +89,9 @@ function Stake(){
                                             </div>
                                         </div>
 
-                                        </div>
+                                        </div> 
 
-                                        <div className="text-center">
+                                         <div className="text-center">
                                             <p className="light-p">Total Reward Balance:</p>
                                             <div className="hest-to-usd py-2">
                                                 <span>300</span>
@@ -89,12 +105,12 @@ function Stake(){
 
                                         </div>
 
-                                        </div>
+                                        </div> 
 
-                                    </div>
+                                    </div> */}
                                 </div>
 
-                                <div className="trade-section">
+                                {/* <div className="trade-section">
 
                                     <p class="light-p">MiniPool (s) Active:</p>
                                     <p class="light-small-p">Advance 2</p>
@@ -130,7 +146,7 @@ function Stake(){
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> */}
 
                             </div>
 
@@ -138,9 +154,17 @@ function Stake(){
 
                         <div className="trade-section">
 
+                            <div className="select-month-main"> 
                             <h5 class="section-title">Stake - MiniPools</h5>
-
-                            <div className="select-minipool">
+                            <div className="position-relative">
+                            {/* <p className="light-small-p ">Select Month</p> */}
+                                <select className="form-control" style={{width:'200px'}}>
+                                    <option value="">This Month</option>
+                                    <option value="">Last Month</option>
+                                </select>
+                            </div>
+                            </div>
+                            <div className="select-minipool mt-4">
 
                                 <div>
                                 <p class="head mb-0">Select a MiniPool</p>
@@ -154,10 +178,11 @@ function Stake(){
                                         <p className="light-small-p absolute-p">REMAINING TIME TO CLOSE</p>
                                         <span className="border-bg">00 : 00 : 00 : 00</span>
                                     </div>
+                                 
                                 </div>
-
+                                
                             </div>
-
+                           
                             <Form className="minipool-form">
 
                            
@@ -175,7 +200,7 @@ function Stake(){
                                     <span className="border-bg">25</span>
                                     <span className="border-bg">14,625 <sub>USDT</sub></span>
                                     <span className="border-bg">4</span>
-                                    <button class="custom-btn secondary-btn">Join</button>
+                                    <button class="custom-btn secondary-btn" onClick={()=>navigate('/pool-detail/1')}>Join</button>
 
                                 </div>
                             </div>
@@ -345,7 +370,7 @@ function Stake(){
 
                     <div className="trade-section">
 
-                        <p className="head">Stake</p>
+                        <p className="head">Recommended MiniPools</p>
                         
                         <div className="time-refresh">
                             <p>ESTIMATED TIME TO REFRESH</p>
