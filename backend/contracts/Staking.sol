@@ -63,6 +63,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         uint256 supplyAmount;
         uint256 partnerAmount;
         uint256 teamAmount;
+        uint256 digitAmount;
         uint256 enteryTime;
     }mapping(uint256 => DepositInfo) public depositInfo;
 
@@ -200,6 +201,8 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     function totalReward(address account , uint8 _id , uint256 _Poolno , uint256 _currentPool) public view returns(uint256) {
         return stakeInfo[account][_id][_Poolno].pendingRewards + calcRewards(account , _id , _Poolno) ; 
     }
+
+    
     
     function withdrawRewards(address account , uint8 _id , uint256 _Poolno ) public {
 
@@ -332,6 +335,13 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
             console.log("Contract :: LOCALSTAKE 9");
     } 
 
+    function timeRequirement() public view returns(bool condition){
+        condition = false;
+        if(block.number < lastinitTime + blocksPerMonth){
+            condition = true;
+        }
+    }
+
     function stake(uint8 _id) public {
 
         uint256 amount = IERC20(HESTTOKEN).allowance(_msgSender() , address(this));
@@ -339,7 +349,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         console.log("Contract :: HEST allowance :",amount);
 
         require(amountStked >= pool[_id][currentPool].min && amountStked <= pool[_id][currentPool].max,"please provide with respect to pool");
-        require(block.number < lastinitTime + blocksPerMonth , "pools period expired");
+        require(timeRequirement() , "pools period expired");
 
         IERC20(HESTTOKEN).transferFrom(
         _msgSender(),
@@ -354,12 +364,12 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
             //save rewards
             saveRewards(_msgSender(),_id ,currentPool);
         }else{     
-                                                            // first time
+            //first time
             pool[_id][currentPool].noOfusers++;
             detail.enteryTime = block.number;
             detail.depositBlock = block.number;
 
-           // userPools.push([currentPool,_id]);
+            //userPools.push([currentPool,_id]);
 
         }
 
@@ -430,10 +440,11 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         );
 
         depositInfo[currentPool] = DepositInfo(
-            amount,
+               amount,
         _supplyAmount,
         _partnerAmount,
         _teamAmount,
+        _digiholderAmount,
         block.timestamp
         );
 

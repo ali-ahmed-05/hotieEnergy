@@ -1,8 +1,6 @@
 import { Col, Container, Row,Table, Form } from "react-bootstrap";
 
 import { memo, useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import {staking_addr} from '../../contract/addresses'
 import ABI from '../../contract/Staking.json'
@@ -11,6 +9,9 @@ import IERC20Metadata from '../../contract/IERC20Metadata.json'
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import Web3Modal from 'web3modal'
+
+import ERROR from '../../utils/error'
+import {loadProvider} from '../../utils/provider'
 
 
 
@@ -36,19 +37,6 @@ function AdjustPool(){
     const poolTitle = ["Adnvace 3","Adnvace 2","Adnvace 1", "Advantage 2" , "Advantage 1" ,"Plus 2" ,"Plus 1","Prestige"] 
     const maxvalue = 800000000
 
-    const logError = (error) => toast.error(error);
-
-    const loadProvider = async () => {
-        try {
-            const web3Modal = new Web3Modal();
-            const connection = await web3Modal.connect();
-            const provider = new ethers.providers.Web3Provider(connection);
-            return provider.getSigner();
-        }
-        catch (e) {
-            console.log("loadProvider: ", e)
-        }
-    }
 
     const changeMin = (index , value) =>{
         if(value > maxvalue)
@@ -84,21 +72,21 @@ function AdjustPool(){
     const require = () =>{
         let result = true
         if(percentages.reduce((acc, num)=> acc+Number(num)) != 100){
-            logError(`percentages does not add up to 100`)
+            ERROR.log(`percentages does not add up to 100`)
             result = false
        }else{
         for (let index = 0; index < min.length; index++) {
             if(min[index] > max[index]){
-                logError(`${poolTitle[index]} min value is greater than max value`)
+                ERROR.log(`${poolTitle[index]} min value is greater than max value`)
                 result = false
                 break
             }else if(min[index] < 0 ){
-                logError(`${poolTitle[index]} min value must be than 0`)
+                ERROR.log(`${poolTitle[index]} min value must be than 0`)
                 result = false
                 break
 
             }else if(max[index] < 0){
-                logError(`${poolTitle[index]} max value must be than 0`)
+                ERROR.log(`${poolTitle[index]} max value must be than 0`)
                 result = false
                 break
             } 
@@ -114,40 +102,22 @@ function AdjustPool(){
                 setButtonTxt("Processing")
                 let signer = await loadProvider()
                 let contract = new ethers.Contract(staking_addr, ABI, signer);
-                // let _min = []
-                // let _max = []
-                // for (let index = 0; index < min.length; index++) {
-                //  //   let towei = ethers.utils.parseUnits(min[index].toString() , 16)
-                //     _min.push(min[index].toString())
-                //   //  towei = ethers.utils.parseUnits(max[index].toString() , 16)
-                //     _max.push(max[index].toString())
-                // }
-               
                 let initialize = await contract.initiatePools(percentages,min,max)
                 await initialize.wait()
+
+                setButtonTxt("Initialize")
 
             }else{
 
             } 
 
         } catch (error) {
-            
             setButtonTxt("Initialize")
-                try {
-                logError(error.error.data.message)
-                } catch{
-                    console.log("initialize :: function " , error)
-                }
-                try{
-                logError(error.message)
-                }catch{
-                console.log("initialize :: function " , error)
-                }
-               
+            ERROR.catch_error(error, 'Initialize')
             }
         }
 
-    const getDetail =async () =>{
+    const getDetail = async () =>{
         try {
 
             let signer = await loadProvider()
@@ -164,16 +134,7 @@ function AdjustPool(){
             setIERC20Reward(obj)
             
         } catch (error) {
-            try {
-                logError(error.error.data.message)
-                } catch{
-                    console.log("getDetail :: function " , error)
-                }
-                try{
-                logError(error.message)
-                }catch{
-                console.log("getDetail :: function " , error)
-                }    
+            ERROR.catch_error(error, 'getDetail')    
         }
     }
     
@@ -205,10 +166,11 @@ function AdjustPool(){
 
 
     } catch (error) {
-        console.log("data", error)
+        ERROR.catch_error(error, 'addRewardToken')
        
     }
 }
+    
 
     useEffect(()=>{
         (async ()=>{
@@ -227,7 +189,7 @@ function AdjustPool(){
 
     return <>
             <Container fluid className="main-height">
-            <ToastContainer />
+            
 
                 <Row>
 

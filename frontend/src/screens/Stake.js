@@ -14,7 +14,6 @@ import {
 import ABI from "../contract/Staking.json";
 import TokenABI from "../contract/HESTOKEN.json";
 import RouterABI from "../contract/IUniswapV2Router02.json";
-
 import IERC20Metadata from "../contract/IERC20Metadata.json";
 
 import { useWeb3React } from "@web3-react/core";
@@ -22,13 +21,19 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import apis from "../services";
 
+import { loadProvider } from '../utils/provider'
+import ERROR from "../utils/error";
+
 function Stake() {
   const [pools, setPools] = useState([]);
   const poolTitle = ["Adnvace 3","Adnvace 2","Adnvace 1", "Advantage 2" , "Advantage 1" ,"Plus 2" ,"Plus 1","Prestige"]
   const [currentPool, setcurrentPool] = useState();
+
   const [TotalRewardBalance , setTotalRewardBalance] = useState(0)
   const [recomendedPool , setRecomendedPool] = useState(0)
   const [hestBalance , setHESTBalance] = useState(0) 
+  const [poolrewards , setpoolrewards] = useState(0) 
+
   const [toUSD , settoUSD] = useState() 
 
   const {
@@ -41,17 +46,6 @@ function Stake() {
     active,
     error,
   } = useWeb3React();
-
-  const loadProvider = async () => {
-    try {
-      const web3Modal = new Web3Modal();
-      const connection = await web3Modal.connect();
-      const provider = new ethers.providers.Web3Provider(connection);
-      return provider.getSigner();
-    } catch (e) {
-      console.log("loadProvider: ", e);
-    }
-  };
 
   const valuetoRewardToken = async (amount , path , decimals) => {
     try {
@@ -93,7 +87,7 @@ function Stake() {
             }
         }
         console.log("totalRewards",temp)
-        setTotalRewardBalance(temp)
+        setTotalRewardBalance(temp.toFixed(5))
         
     } catch (error) {
         console.log(error)
@@ -103,11 +97,11 @@ function Stake() {
   const redeem = async ()=>{
     try {
       let signer = await loadProvider();
-      let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+      let stakingContract = new ethers.Contract(staking_addr, ABI, signer );
       let clubsend = await stakingContract.clubRewards(account , true , [])
       await clubsend.wait()
     } catch (error) {
-      console.log(error)
+        ERROR.catch_error(error,'redeem')
     }
   }
 
@@ -139,6 +133,7 @@ function Stake() {
       await totalRewards(_currentPool,stakingContract,reward_decimals)
 
       let pool = [];
+      let poolreward = 0
 
       for (let inn = 1; inn < 9; inn++) {
         let pool_data = await stakingContract.pool(inn, _currentPool);
@@ -159,13 +154,19 @@ function Stake() {
           cent: Number(pool_data[7].toString()),
         });
 
+        poolreward += Number(pool[pool.length-1].rewardTokenValue)
+
+        
+
         if(HestBalance >= pool[pool.length-1].min){
           setRecomendedPool(pool.length-1)
-          console.log("setRecomendedPool",pool.length-1)
+          console.log("setRecomendedPool", pool.length-1 )
         }
 
         
       }
+      setpoolrewards(poolreward)
+
       setPools(pool);
       console.log(pool);
     } catch (error) {
@@ -270,7 +271,7 @@ function Stake() {
                 <div className="d-flex align-items-center">
                   <span className="border-bg">Total Reward</span>
                   <span className="border-bg">
-                    58,500 <sub>USDT</sub>
+                    {poolrewards} <sub>USD</sub>
                   </span>
                   <div className="position-relative">
                     <p className="light-small-p absolute-p">

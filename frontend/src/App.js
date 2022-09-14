@@ -6,6 +6,8 @@ import {BuyHes,TokenOverview,Payments,News,Disclaimer,
   Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin, PoolDetail, TransferOwnerShip, WithdrawWalletTeam, WithdrawWalletPartner} from './screens/Index';
 import { useEagerConnect, useInactiveListener } from './hooks/useEagerConnect';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {

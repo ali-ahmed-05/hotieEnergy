@@ -9,10 +9,14 @@ import './assets/css/responsive.css'
 import reportWebVitals from './reportWebVitals';
 import { Web3ReactProvider } from '@web3-react/core';
 import { getLibrary } from './utils/web3Library';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 ReactDOM.render(
   <React.StrictMode>
     <Web3ReactProvider getLibrary={getLibrary}>
       <App />
+      <ToastContainer />
     </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -19,9 +19,12 @@ import IERC20Metadata from "../contract/IERC20Metadata.json";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
+import { loadProvider } from '../utils/provider'
 import apis from "../services";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import ERROR from '../utils/error'
 
 
 
@@ -60,19 +63,6 @@ function PoolDetail(){
             await provider.send("evm_mine")
         }
       }
-    
-
-
-    const loadProvider = async () => {
-        try {
-          const web3Modal = new Web3Modal();
-          const connection = await web3Modal.connect();
-          const provider = new ethers.providers.Web3Provider(connection);
-          return provider.getSigner();
-        } catch (e) {
-          console.log("loadProvider: ", e);
-        }
-      };
 
     const stake = async ()=> {
         try {
@@ -83,17 +73,21 @@ function PoolDetail(){
             console.log("&&&&&&",min)
             console.log("&&&&&&&&",max)
             console.log("&&&&amount",Number(amount) + Number(staked))
-            
+            //timeRequirement()
             let _amount = Number(amount) + Number(staked)
-            if(_amount >= min && _amount <= max ){
+            let signer = await loadProvider();
+            let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+            let condition = await stakingContract.timeRequirement()
+
+            
+            if(_amount >= min && _amount <= max && condition==true){
 
             console.log("&&&&&&",min)
             console.log("&&&&&&&&",max)
 
             
 
-            let signer = await loadProvider();
-            let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+            
             let HestContract = new ethers.Contract(hestoken_addr, TokenABI, signer);
             let HestDecimals = await HestContract.decimals();
 
@@ -111,32 +105,21 @@ function PoolDetail(){
 
             }else{
                 console.log("asdasdsad")
-                logError("please enter amount between mininum and maximum")
+                if(condition==false)
+                ERROR.log("Pool has been closed")
+                else
+                ERROR.log("please enter amount between mininum and maximum")
+                
             }
     
         } catch (error) {
-            console.log(error)
+            ERROR.catch_error(error,'stake')
         }
     }
 
 
     const unstake = async ()=> {
         try {
-
-            let min = Number(detail.data.min)
-            let max = Number(detail.data.max)
-
-            console.log("&&&&&&",min)
-            console.log("&&&&&&&&",max)
-            console.log("&&&&amount",amount)
-            
-
-            if(amount >= min && amount <= max ){
-
-            console.log("&&&&&&",min)
-            console.log("&&&&&&&&",max)
-
-            
 
             let signer = await loadProvider();
             let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
@@ -145,16 +128,12 @@ function PoolDetail(){
 
             let _unstake  = await stakingContract.unStake(ID , detail.currentPool , ethers.utils.parseUnits(amount.toString() , HestDecimals))
             await _unstake.wait()
-
-            }else{
-                console.log("asdasdsad")
-                logError("please enter amount between mininum and maximum")
-            }
     
         } catch (error) {
-            console.log(error)
+            ERROR.catch_error(error,'unstake')
         }
-    }
+      }
+    
 
 
     const userDetail = async (signer , decimals , rewardToken_address ) => {
