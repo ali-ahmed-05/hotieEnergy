@@ -11,5 +11,9 @@ import PoolDetail from './PoolDetail';
 import Admin from './Admin';
 import AdjustPool from './admin/AdjustPools';
 import ChangeStableCoin from './admin/ChangeStableCoin';
-export {BuyHes,TokenOverview,Payments,News,Disclaimer,Partners,Team,Admin,Stake,
-    Calculator,AdjustPool,ChangeStableCoin,PoolDetail}
+import ModifyDisclaimer from "./admin/ModifyDisclaimer";
+
+export {
+    BuyHes, TokenOverview, Payments, News, Disclaimer, Partners, Team, Admin, Stake,
+    Calculator, AdjustPool, ChangeStableCoin, PoolDetail, ModifyDisclaimer
+}
