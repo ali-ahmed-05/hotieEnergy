@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import {notFound} from "./middlewares/notFound.js";
 import disclaimerRoutes from "./routes/disclaimer.js";
 import Errors from "./middlewares/errors.js";
+import poolAddressRoutes from "./routes/poolAddreses.js";
 
 
 dotenv.config();
@@ -16,7 +17,8 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 // Routes
-app.use('/api', disclaimerRoutes)
+app.use('/api/disclaimer', disclaimerRoutes)
+app.use('/api/poolAddress', poolAddressRoutes);
 
 // Middlewares
 app.use(notFound);
