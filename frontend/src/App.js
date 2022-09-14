@@ -3,7 +3,7 @@ import './App.css';
 import Home from './components/Home';
 import {SideBar,Header,Footer} from './components/Index';
 import {BuyHes,TokenOverview,Payments,News,Disclaimer,
-  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin, PoolDetail, ModifyDisclaimer} from './screens';
+  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin, PoolDetail, ModifyDisclaimer} from './screens/Index';
 import { useEagerConnect, useInactiveListener } from './hooks/useEagerConnect';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
 
