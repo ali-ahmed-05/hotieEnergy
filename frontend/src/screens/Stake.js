@@ -558,7 +558,7 @@ function Stake() {
                 </div>
               </div>
 
-              <div className="input-stake">
+              <button className="input-stake w-100 border-none">
                 <img src={Hest} />
                 <p
                 onClick={() => navigate(`/pool-detail/${recomendedPool}`,{state: { data: pools[recomendedPool], poolTitle : poolTitle[recomendedPool] , currentPool } })}
@@ -566,7 +566,7 @@ function Stake() {
                 {/* <button
                 onClick={() => navigate(`/pool-detail/${recomendedPool}`,{state: { data: pools[recomendedPool], poolTitle : poolTitle[recomendedPool] , currentPool } })}
                 >Join Pool</button> */}
-              </div>
+              </button>
 
               {/* <div className="btn-group justify-content-end">
                 <button class="custom-btn secondary-btn">Unstake</button>
