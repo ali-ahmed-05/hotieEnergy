@@ -230,7 +230,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     function clubRewards(address account , bool send , uint8[] memory _ids) public {
         uint256 amount = 0 ;
         uint256 HestAmount = 0 ;
-        for (uint256 index = 1; index < currentPool; index++) {
+        for (uint256 index = 1; index <= currentPool; index++) {
             for (uint8 _Poolno = 1; _Poolno < 9; _Poolno++) {
 
                 uint256 tempAmount = totalReward( account , _Poolno , index  ,_Poolno);
@@ -257,7 +257,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         console.log("contract :: amount",amount);
 
         if(send){
-        IERC20(rewardToken).transfer(account , amount);
+            IERC20(rewardToken).transfer(account , amount);
         }else{
             uint256[] memory outAmount = swapTokensForTokens(amount,address(this));
             // console.log("Contract :: inAmount", outAmount[0]);
@@ -335,9 +335,10 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     function stake(uint8 _id) public {
 
         uint256 amount = IERC20(HESTTOKEN).allowance(_msgSender() , address(this));
+        uint256 amountStked = stakeInfo[_msgSender()][_id][currentPool].staked + amount;
         console.log("Contract :: HEST allowance :",amount);
 
-        require(amount >= pool[_id][currentPool].min && amount <= pool[_id][currentPool].max,"please provide with respect to pool");
+        require(amountStked >= pool[_id][currentPool].min && amountStked <= pool[_id][currentPool].max,"please provide with respect to pool");
         require(block.number < lastinitTime + blocksPerMonth , "pools period expired");
 
         IERC20(HESTTOKEN).transferFrom(
