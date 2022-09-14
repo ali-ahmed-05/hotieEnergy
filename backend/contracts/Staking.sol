@@ -20,6 +20,11 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     address public team; //1
     address public partner; //9
     address public digitHolder; //39
+    
+    uint256 public supply_cent = 51; //51
+    uint256 public team_cent = 1; //1
+    uint256 public partner_cent = 9; //9
+    uint256 public digitHolder_cent = 39; //39
 
     uint256 public lastinitTime;
     uint256 public blocksPerMonth = 720; //864000;
@@ -43,6 +48,8 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         uint8 cent;
     }mapping(uint8 => mapping(uint256 => Pool)) public pool;
 
+
+
     struct StakeInfo{
         uint256 staked;
         uint256 reward;
@@ -51,10 +58,27 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         uint256 pendingRewards;
     }mapping(address => mapping(uint256 =>mapping(uint256 => StakeInfo))) public stakeInfo;
 
+    struct DepositInfo{
+        uint256 amount;
+        uint256 supplyAmount;
+        uint256 partnerAmount;
+        uint256 teamAmount;
+        uint256 enteryTime;
+    }mapping(uint256 => DepositInfo) public depositInfo;
+
+
+
     mapping(address => uint256) public stakedBalance;
+
+    constructor(address _supply , address _partner , address _team){
+        supply = _supply;
+        partner = _partner;
+        team = _team;
+    }
 
     
     function setRewardTokenAddress(address _token) public onlyOwner { 
+
         require(_token != address(0),"invalid address");
         require(getPair(HESTTOKEN  , _token) != address(0) ,"the pair doesnt exist");
         
@@ -69,9 +93,29 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         rewardToken = _token;
     }
 
+
+
     function setHESTAddress(address _HESTTOKEN) public onlyOwner {
         require(_HESTTOKEN != address(0),"invalid address");
         HESTTOKEN = _HESTTOKEN;
+    }
+
+    function set_supplycent(uint256 _cent) public onlyOwner {
+        require(_cent != 0 && _cent + team_cent + partner_cent + digitHolder_cent <= 100, "invalid uint256");
+        supply_cent = _cent;
+    }
+
+    function set_teamcent(uint256 _cent) public onlyOwner {
+        require(_cent != 0 && _cent + supply_cent + partner_cent + digitHolder_cent <= 100,"invalid uint256");
+        team_cent = _cent;
+    }
+    function set_partnercent(uint256 _cent) public onlyOwner {
+        require(_cent != 0 && _cent + team_cent + supply_cent + digitHolder_cent <= 100,"invalid uint256");
+        partner_cent = _cent;
+    }
+    function set_digiholdercent(uint256 _cent) public onlyOwner {
+        require(_cent != 0 && _cent + team_cent + partner_cent + supply_cent <= 100,"invalid address");
+        digitHolder_cent = _cent;
     }
 
     function setRouterAddress(address newRouter) public onlyOwner() {
@@ -94,6 +138,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         require(percentages[i-1] <= 92,"decimals not allowed");
 
         pool[i][currentPool].cent = percentages[i-1];
+        
         pool[i][currentPool].min = min[i-1] * 10 **IERC20Metadata(HESTTOKEN).decimals();
         pool[i][currentPool].max = max[i-1] * 10 **IERC20Metadata(HESTTOKEN).decimals();
 
@@ -171,6 +216,8 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
 
         stakeInfo[account][_id][_Poolno].pendingRewards = 0 ; 
         stakeInfo[account][_id][_Poolno].depositBlock = 0 ;
+
+        
 
         IERC20(rewardToken).transfer( account , amount);
         IERC20(HESTTOKEN).transfer( account , stakeInfo[account][_id][_Poolno].staked);
@@ -347,11 +394,20 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
 
     }
 
+
+
     function addRewardToken(uint256 amount)public onlyOwner {
 
         require(amount >= 100 *10**IERC20Metadata(rewardToken).decimals(),"please provide atleast 100 Reward token");
         require(IERC20(rewardToken).allowance(owner() , address(this)) >= amount ,"please approve Reward token");
         require(block.number < lastinitTime + blocksPerMonth , "pools period expired");
+        
+        uint256 _supplyAmount =  (amount/100)*supply_cent;
+        uint256 _partnerAmount = (amount/100)*partner_cent;
+        uint256 _teamAmount = (amount/100)*team_cent;
+        uint256 _digiholderAmount = (amount/100)*digitHolder_cent;
+
+
         
         IERC20(rewardToken).transferFrom(
         owner(),
@@ -359,12 +415,33 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         amount
         );
 
+        IERC20(rewardToken).transfer(
+        supply,
+        _supplyAmount
+        );
+        IERC20(rewardToken).transfer(
+        partner,
+        _partnerAmount
+        );
+        IERC20(rewardToken).transfer(
+        team,
+        _teamAmount
+        );
+
+        depositInfo[currentPool] = DepositInfo(
+            amount,
+        _supplyAmount,
+        _partnerAmount,
+        _teamAmount,
+        block.timestamp
+        );
+
         uint8 i;
 
         for(i=1; i<9; i++){
 
             require(pool[i][currentPool].cent >= 1,"please initiate pool first");
-            pool[i][currentPool].rewardTokenValue = (amount/100) * pool[i][currentPool].cent;
+            pool[i][currentPool].rewardTokenValue = (_digiholderAmount/100) * pool[i][currentPool].cent;
         
         }
 

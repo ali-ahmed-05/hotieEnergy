@@ -43,7 +43,7 @@ async function main() {
   await hestoken.deployed()
 
   Staking = await ethers.getContractFactory("Staking")  
-  staking = await Staking.deploy()
+  staking = await Staking.deploy(await deployer.getAddress(),await deployer.getAddress(),await deployer.getAddress())
   await staking.deployed()
 
   let _ETHvalue = await ethers.utils.parseEther('100')
