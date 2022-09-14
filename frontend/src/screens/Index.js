@@ -7,8 +7,9 @@ import News from './News';
 import Disclaimer from './Disclaimer';
 import Partners from './Partners';
 import Team from './Team';
+import PoolDetail from './PoolDetail';
 import Admin from './Admin';
 import AdjustPool from './admin/AdjustPools';
 import ChangeStableCoin from './admin/ChangeStableCoin';
 export {BuyHes,TokenOverview,Payments,News,Disclaimer,Partners,Team,Admin,Stake,
-    Calculator,AdjustPool,ChangeStableCoin}
+    Calculator,AdjustPool,ChangeStableCoin,PoolDetail}

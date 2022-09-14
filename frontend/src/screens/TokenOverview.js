@@ -126,7 +126,7 @@ function TokenOverview(){
             obj.userStaked = user.userTotalStaked
             obj.userClaimable = user.userTotalClaimable
 
-            obj.userRewardValue = await valuetoRewardToken(userBalance , [hestoken_addr , rewardToken_address])
+            obj.userRewardValue = await valuetoRewardToken(userBalance , [hestoken_addr , rewardToken_address],user.reward_decimals)
 
             console.log("obj.userRewardValue",obj.userRewardValue)
 
