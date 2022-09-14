@@ -25,7 +25,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
-
 function PoolDetail(){
     const location = useLocation();
     const detail = location.state
@@ -47,11 +46,21 @@ function PoolDetail(){
     } = useWeb3React();
 
     const [amount , setAmount] = useState()
-    const [rewards , setRewards] = useState()
-    const [staked , setStaked] = useState()
+    const [rewards , setRewards] = useState('0.0')
+    const [staked , setStaked] = useState('0.0')
 
 
     const logError = (error) => toast.error(error);
+
+    const mineNBlocks =  async (n)=> {
+        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
+        for (let index = 0; index < n; index++) {
+            console.log("evm_mine")
+
+            await provider.send("evm_mine")
+        }
+      }
+    
 
 
     const loadProvider = async () => {
@@ -73,10 +82,10 @@ function PoolDetail(){
 
             console.log("&&&&&&",min)
             console.log("&&&&&&&&",max)
-            console.log("&&&&amount",amount)
+            console.log("&&&&amount",Number(amount) + Number(staked))
             
-
-            if(amount >= min && amount <= max ){
+            let _amount = Number(amount) + Number(staked)
+            if(_amount >= min && _amount <= max ){
 
             console.log("&&&&&&",min)
             console.log("&&&&&&&&",max)
@@ -95,6 +104,9 @@ function PoolDetail(){
             if(tx.confirmations > 0){
                 let add = await stakingContract.stake(ID)
                 await add.wait()
+
+                //localHost testing lines
+                await mineNBlocks(24 * 15)
             }
 
             }else{
@@ -176,11 +188,12 @@ function PoolDetail(){
 
     useEffect(
         async ()=>{
-            if(ID!==0){
+            if(ID!==0 && library){
                 await userDetail()
+                await mineNBlocks(1)
             }
         }
-    ,[account])
+    ,[account , library])
 
     return <>
             <Container fluid className="main-height">
@@ -238,13 +251,13 @@ function PoolDetail(){
                         <div className="stake-meta-div">
                             <p>Users HEST staked</p>
                             <span>Actual</span>
-                            <h4 className="head">{staked}</h4>
+                            <h4 className="head">{staked}<sub>HEST</sub></h4>
                         </div>
 
                         <div className="stake-meta-div">
                             <p>Users rewards</p>
                             <span>Actual</span>
-                            <h4 className="head">{rewards}</h4>
+                            <h4 className="head">{rewards}<sub>USD</sub></h4>
                         </div>
 
                         <div className="stake-meta-div stake-green">

@@ -89,7 +89,7 @@ function Stake() {
         for (let index = 1; index <= _currentPool; index++) {
             for (let id = 1; id < 9; id++) {
                 let totalRewardBlance  = await stakingContract.totalReward(account,id,_currentPool,_currentPool)
-                temp += Number( ethers.utils.parseUnits(totalRewardBlance.toString(), decimals))     
+                temp += Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals))     
             }
         }
         console.log("totalRewards",temp)
@@ -97,6 +97,17 @@ function Stake() {
         
     } catch (error) {
         console.log(error)
+    }
+  }
+
+  const redeem = async ()=>{
+    try {
+      let signer = await loadProvider();
+      let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+      let clubsend = await stakingContract.clubRewards(account , true , [])
+      await clubsend.wait()
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -125,7 +136,7 @@ function Stake() {
 
       setcurrentPool(_currentPool);
 
-      await totalRewards(_currentPool,stakingContract,HestDecimals)
+      await totalRewards(_currentPool,stakingContract,reward_decimals)
 
       let pool = [];
 
@@ -227,7 +238,7 @@ function Stake() {
                         <button class="custom-btn secondary-btn mb-3">
                           Compound
                         </button>
-                        <button class="custom-btn secondary-btn">Redeem</button>
+                        <button class="custom-btn secondary-btn" onClick={redeem}>Redeem</button>
                       </div>
                     </div>
                   </div>
