@@ -188,8 +188,19 @@ function AdjustPool(){
             let IERC20 = new ethers.Contract(IERC20Reward.address, IERC20Metadata, signer);
             let allowance = await IERC20.allowance(account , staking_addr)
             let _value = await ethers.utils.parseUnits(coinValue.toString(),IERC20Reward.decimals)
-            if(!allowance){
+            console.log(allowance.toString())
+            if(Number(allowance.toString()) === 0){
+                console.log("inn")
                 let approve = await IERC20.approve(staking_addr , _value)
+                let tx = await approve.wait()
+                if(tx.confirmations > 0){
+                    let add = await contract.addRewardToken(_value)
+                    await add.wait()
+                }
+            }else{
+                console.log("out")
+                let add = await contract.addRewardToken(_value)
+                await add.wait()
             }
 
 

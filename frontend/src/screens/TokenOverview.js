@@ -17,6 +17,7 @@ import IERC20Metadata from '../contract/IERC20Metadata.json'
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import Web3Modal from 'web3modal'
+import apis from "../services";
 
 
 
@@ -125,7 +126,7 @@ function TokenOverview(){
             obj.userStaked = user.userTotalStaked
             obj.userClaimable = user.userTotalClaimable
 
-            obj.userRewardValue = await valuetoRewardToken(userBalance , [hestoken_addr , rewardToken_address])
+            obj.userRewardValue = await valuetoRewardToken(userBalance , [hestoken_addr , rewardToken_address],user.reward_decimals)
 
             console.log("obj.userRewardValue",obj.userRewardValue)
 
@@ -140,6 +141,7 @@ function TokenOverview(){
 
     useEffect(
         async () => {
+           
             if(account){
                await getDetails()
             }

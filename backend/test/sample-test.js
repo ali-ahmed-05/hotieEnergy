@@ -40,7 +40,7 @@ describe("HOTIE ENERGY",  function ()  {
     await hestoken.deployed()
 
     Staking = await ethers.getContractFactory("Staking")  
-    staking = await Staking.deploy()
+    staking = await Staking.deploy(_.address , _.address , _.address)
     await staking.deployed()
 
     let _ETHvalue = await ethers.utils.parseEther('100')

@@ -75,7 +75,7 @@ module.exports = {
     disambiguatePaths: false,
     runOnCompile: true,
     strict: true,
-    only: [':Staking$',':HESTOKEN$',':IUniswapV2Router02$'],
+    only: [':Staking$',':HESTOKEN$'],
   },
 
   abiExporter: {
