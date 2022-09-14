@@ -24,7 +24,7 @@ function Admin() {
                     <Col lg={12}>
                         <ul className="admin-ul">
                             <li>
-                                <Link to={'#'}>
+                                <Link to={'/admin/transfer-ownership'}>
 
                                     <img src={Transfer} />
                                     <span>TRANSFER <br />OWNERSHIP</span>
@@ -40,7 +40,7 @@ function Admin() {
 
                             </li>
                             <li>
-                                <Link to={'#'}>
+                                <Link to={'/admin/withdraw-wallet-team'}>
 
                                     <img src={Wallet} />
                                     <span>ADD/WITHDRAW<br /> WALLET (TEAM)</span>
@@ -48,7 +48,7 @@ function Admin() {
 
                             </li>
                             <li>
-                                <Link to={'#'}>
+                                <Link to={'/admin/withdraw-wallet-partner'}>
 
                                     <img src={WalletPartner} />
                                     <span>ADD/WITHDRAW <br /> WALLET (PARTNER)</span>

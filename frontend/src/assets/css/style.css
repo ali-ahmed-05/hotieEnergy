@@ -1259,3 +1259,6 @@ input[type=number] {
     align-items: center;
     justify-content: space-between;
 }
+.border-none{
+    border: none !important;
+}
