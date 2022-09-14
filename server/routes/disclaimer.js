@@ -4,7 +4,7 @@ import {getDisclaimers, createDisclaimers} from "../controllers/disclaimer.js";
 const disclaimerRouter = express.Router();
 
 
-disclaimerRouter.route('/disclaimer')
+disclaimerRouter.route('/')
     .get(getDisclaimers)
     .post(createDisclaimers)
 
