@@ -20,6 +20,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import apis from "../services";
+import CompoundModal from "../components/modals/CompoundModal";
 
 import { loadProvider } from '../utils/provider'
 import ERROR from "../utils/error";
@@ -31,10 +32,28 @@ function Stake() {
 
   const [TotalRewardBalance , setTotalRewardBalance] = useState(0)
   const [recomendedPool , setRecomendedPool] = useState(0)
-  const [hestBalance , setHESTBalance] = useState(0) 
-  const [poolrewards , setpoolrewards] = useState(0) 
+  const [hestBalance , setHESTBalance] = useState(0)
+  const [stakedBalance, setStakedBalance] = useState();
+  const [toUSD , settoUSD] = useState()
+  const [compoundModal, setCompoundModal] = useState(false);
+  const [selectedPools, setSelectedPools] = useState([]);
+  const toggleModalState = () => setCompoundModal(prevState => !prevState);
 
-  const [toUSD , settoUSD] = useState() 
+  console.log(selectedPools);
+
+  const handleSelectPool = (index) => {
+    if(selectedPools.includes(index)){
+      setSelectedPools(prevState => prevState.filter(pool => pool !== index));
+    }else{
+      setSelectedPools(prevState => [...prevState, index]);
+    }
+  }
+
+  const handleClubStake = () => {
+    alert('Club Stake');
+  }
+
+  const compoundModalProps = {poolTitle, status: compoundModal, handleClose: toggleModalState, handleSelectPool, TotalRewardBalance,hestBalance,stakedBalance,handleClubStake};
 
   const {
     connector,
@@ -236,18 +255,14 @@ function Stake() {
                       </div>
 
                       <div className="d-flex flex-column">
-                        <button class="custom-btn secondary-btn mb-3">
+                        <button class="custom-btn secondary-btn mb-3" onClick={toggleModalState}>
                           Compound
                         </button>
                         <button class="custom-btn secondary-btn" onClick={redeem}>Redeem</button>
                       </div>
                     </div>
                   </div>
-
-                  
                 </div>
-
-               
               </div>
             </div>
 
@@ -592,6 +607,7 @@ function Stake() {
             </div>
           </Col>
         </Row>
+        <CompoundModal {...compoundModalProps}/>
       </Container>
     </>
   );

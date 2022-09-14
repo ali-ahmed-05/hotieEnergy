@@ -101,7 +101,7 @@ function Admin() {
 
                             </li>
                             <li>
-                                <Link to={'#'}>
+                                <Link to={'/admin/change-stable-coin'}>
 
                                 <img src={Info} />
                                 <span>MODIFY <br /> DISCLAIMERS</span>
