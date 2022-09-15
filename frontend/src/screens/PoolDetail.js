@@ -18,11 +18,10 @@ import IERC20Metadata from "../contract/IERC20Metadata.json";
 
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
-import Web3Modal from "web3modal";
+
 import { loadProvider } from '../utils/provider'
 import apis from "../services";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 import ERROR from '../utils/error'
 
@@ -51,9 +50,8 @@ function PoolDetail(){
     const [amount , setAmount] = useState()
     const [rewards , setRewards] = useState('0.0')
     const [staked , setStaked] = useState('0.0')
+    const [update , setUpdate] = useState(0)
 
-
-    const logError = (error) => toast.error(error);
 
     const mineNBlocks =  async (n)=> {
         const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
@@ -99,6 +97,7 @@ function PoolDetail(){
                 let add = await stakingContract.stake(ID)
                 await add.wait()
 
+                setUpdate(update+1)
                 //localHost testing lines
                 await mineNBlocks(24 * 15)
             }
@@ -128,6 +127,8 @@ function PoolDetail(){
 
             let _unstake  = await stakingContract.unStake(ID , detail.currentPool , ethers.utils.parseUnits(amount.toString() , HestDecimals))
             await _unstake.wait()
+
+            setUpdate(update+1)
     
         } catch (error) {
             ERROR.catch_error(error,'unstake')
@@ -172,7 +173,7 @@ function PoolDetail(){
                 await mineNBlocks(1)
             }
         }
-    ,[account , library])
+    ,[account , library , update])
 
     return <>
             <Container fluid className="main-height">

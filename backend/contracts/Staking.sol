@@ -233,7 +233,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     function clubRewards(address account , bool send , uint8[] memory _ids) public {
         uint256 amount = 0 ;
         uint256 HestAmount = 0 ;
-        for (uint256 index = 1; index <= currentPool; index++) {
+        for (uint256 index = 1; index < currentPool; index++) {
             for (uint8 _Poolno = 1; _Poolno < 9; _Poolno++) {
 
                 uint256 tempAmount = totalReward( account , _Poolno , index  ,_Poolno);
@@ -254,7 +254,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
             }
         }
 
-        require(amount > 0 , "no rewards pending");
+        require(amount > 0 , "cannot withdraw rewards before 1 month");
 
 
         console.log("contract :: amount",amount);

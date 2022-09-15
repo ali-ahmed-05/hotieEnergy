@@ -37,6 +37,8 @@ function Stake() {
   const [toUSD , settoUSD] = useState()
   const [compoundModal, setCompoundModal] = useState(false);
   const [selectedPools, setSelectedPools] = useState([]);
+  const [poolrewards , setpoolrewards] = useState(0)
+
   const toggleModalState = () => setCompoundModal(prevState => !prevState);
 
   console.log(selectedPools);

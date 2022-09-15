@@ -27,7 +27,7 @@ function Admin() {
                                 <Link to={'/admin/transfer-ownership'}>
 
                                     <img src={Transfer} />
-                                    <span>TRANSFER <br />OWNERSHIP</span>
+                                    <span>TRANSFER<br />OWNERSHIP</span>
                                 </Link>
 
                             </li>
@@ -101,7 +101,7 @@ function Admin() {
 
                             </li>
                             <li>
-                                <Link to={'/admin/change-stable-coin'}>
+                                <Link to={'/admin/modify-disclaimer'}>
 
                                 <img src={Info} />
                                 <span>MODIFY <br /> DISCLAIMERS</span>

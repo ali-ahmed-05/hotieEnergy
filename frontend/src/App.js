@@ -3,11 +3,10 @@ import './App.css';
 import Home from './components/Home';
 import {SideBar,Header,Footer} from './components/Index';
 import {BuyHes,TokenOverview,Payments,News,Disclaimer,
-  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin, PoolDetail, ModifyDisclaimer} from './screens/Index';
+  Partners,Team,Admin,Stake,Calculator, AdjustPool,ChangeStableCoin, PoolDetail,ModifyDisclaimer, TransferOwnerShip, WithdrawWalletTeam, WithdrawWalletPartner} from './screens/Index';
 import { useEagerConnect, useInactiveListener } from './hooks/useEagerConnect';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function App() {
@@ -41,6 +40,9 @@ function App() {
         <Route path="/admin/adjust/pool" element={<AdjustPool/>}  />
         <Route path="/admin/change-stable-coin" element={<ChangeStableCoin/>}  />
         <Route path="/admin/modify-disclaimer" element={<ModifyDisclaimer/>}  />
+        <Route path="/admin/transfer-ownership" element={<TransferOwnerShip/>}  />
+        <Route path="/admin/withdraw-wallet-team" element={<WithdrawWalletTeam/>}  />
+        <Route path="/admin/withdraw-wallet-partner" element={<WithdrawWalletPartner/>}  />
         </Routes>
         <Footer/>
       </div>
