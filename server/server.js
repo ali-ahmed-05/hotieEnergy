@@ -7,6 +7,7 @@ import disclaimerRoutes from "./routes/disclaimer.js";
 import Errors from "./middlewares/errors.js";
 import poolAddressRoutes from "./routes/poolAddreses.js";
 import cors from 'cors'
+import newsRouter from './routes/news.js';
 
 dotenv.config();
 connectDB();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cors('*'));
 // Routes
 app.use('/api/disclaimer', disclaimerRoutes)
+app.use('/api/news', newsRouter)
 app.use('/api/poolAddress', poolAddressRoutes);
 
 // Middlewares
