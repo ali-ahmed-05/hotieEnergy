@@ -11,12 +11,14 @@ const createBackendServer = baseURL => {
 
     const getDisclaimer = async () => api.get(`/api/disclaimer`);
     const createDisclaimer = async (body) => api.post('/api/disclaimer', body);
-    const getNews = (req) => {api.get(`/api`)};
+    const getNews = (req) => api.get(`/api/news`);
+    const createNews = async (body) => api.post('/api/news', body);
 
    
     return {
         createDisclaimer,
         getDisclaimer,
+        createNews,
         getNews
     };
 
