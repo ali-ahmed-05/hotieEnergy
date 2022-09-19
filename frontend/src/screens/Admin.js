@@ -93,7 +93,7 @@ function Admin() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'#'}>
+                                <Link to={'/admin/news'}>
 
                                 <img src={News} />
                                 <span>ADD <br /> NEWS</span>
