@@ -31,6 +31,7 @@ function Stake() {
   const [currentPool, setcurrentPool] = useState();
 
   const [TotalRewardBalance , setTotalRewardBalance] = useState(0)
+  const [TotalRewardClaimable , setTotalRewardClaimable] = useState(0)
   const [recomendedPool , setRecomendedPool] = useState(0)
   const [hestBalance , setHESTBalance] = useState(0)
   const [stakedBalance, setStakedBalance] = useState();
@@ -49,13 +50,14 @@ function Stake() {
     }else{
       setSelectedPools(prevState => [...prevState, index]);
     }
+    console.log(selectedPools)
   }
 
   const handleClubStake = () => {
     alert('Club Stake');
   }
 
-  const compoundModalProps = {poolTitle, status: compoundModal, handleClose: toggleModalState, handleSelectPool, TotalRewardBalance,hestBalance,stakedBalance,handleClubStake};
+  const compoundModalProps = {poolTitle, status: compoundModal, handleClose: toggleModalState, handleSelectPool, TotalRewardBalance,hestBalance,stakedBalance,handleClubStake };
 
   const {
     connector,
@@ -89,6 +91,8 @@ function Stake() {
     }
 }
 
+
+
   const getCurrentPool = async () => {
     try {
       let signer = await loadProvider();
@@ -101,14 +105,22 @@ function Stake() {
   const totalRewards = async (_currentPool , stakingContract , decimals) => {
     try {
         let temp = 0
+        let claim = 0
+        console.log("_currentPool" , _currentPool)
         for (let index = 1; index <= _currentPool; index++) {
+
             for (let id = 1; id < 9; id++) {
-                let totalRewardBlance  = await stakingContract.totalReward(account,id,_currentPool,_currentPool)
-                temp += Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals))     
+                let totalRewardBlance  = await stakingContract.totalReward(account,id,index,id)
+                temp += Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals))
+                console.log("totalRewards",id,Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals)))
+                if(index != _currentPool)
+                claim += Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals))
+
             }
         }
         console.log("totalRewards",temp)
         setTotalRewardBalance(temp.toFixed(5))
+        setTotalRewardClaimable(claim.toFixed(5))
         
     } catch (error) {
         console.log(error)
@@ -225,8 +237,8 @@ function Stake() {
                             : ' '+"0x000000" }
               </p>
 
-              <div className="stake-top">
-                <div>
+              <div className="">
+                <div className="w-100">
                   <div className="wallet-blnc">
                     <div className="text-center">
                       <p className="light-p">Wallet Balance:</p>
@@ -250,12 +262,24 @@ function Stake() {
                       <button class="custom-btn secondary-btn">Unstake</button>
                     </div> */}
                     <div className="text-center">
-                      <p className="light-p">Total Reward Balance:</p>
+                      <p className="light-p">Total Estimated Reward Balance:</p>
                       <div className="hest-to-usd py-2">
                         <span>{TotalRewardBalance}</span>
                         <span>USD</span>
                       </div>
 
+                      
+
+                      
+
+                    </div>
+                    <div className="text-center">
+                    <p className="light-p">Total Reward Claimable:</p>
+                      <div className="hest-to-usd py-2">
+                        <span>{TotalRewardClaimable}</span>
+                        <span>USD</span>
+                      </div>
+                      
                       <div className="d-flex flex-column">
                         <button class="custom-btn secondary-btn mb-3" onClick={toggleModalState}>
                           Compound
@@ -609,7 +633,7 @@ function Stake() {
             </div>
           </Col>
         </Row>
-        <CompoundModal {...compoundModalProps}/>
+        <CompoundModal {...compoundModalProps }/>
       </Container>
     </>
   );

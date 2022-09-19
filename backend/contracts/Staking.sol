@@ -142,9 +142,10 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         
         pool[i][currentPool].min = min[i-1] * 10 **IERC20Metadata(HESTTOKEN).decimals();
         pool[i][currentPool].max = max[i-1] * 10 **IERC20Metadata(HESTTOKEN).decimals();
-
-        }
         pool[i][currentPool].creationTime = block.number;
+        console.log("block.number",block.number);
+        }
+       
         lastinitTime = block.number;
     }
 
@@ -152,15 +153,17 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         
         StakeInfo memory detail = stakeInfo[account][_id][_Poolno];
         uint256 currentblock = block.number;
+       
         uint256 depositBlock = detail.depositBlock;
+        // new
         uint256 blocks = currentblock - depositBlock;
 
 
 
           console.log("contract :: depositBlock",depositBlock);
-      //  console.log("contract :: currentblock",currentblock);
-      //  console.log("contract :: blocks",blocks);
-      //  || pool[_id][_Poolno].creationTime + blocksPerMonth < depositBlock
+          console.log("contract :: creationTime",pool[_id][_Poolno].creationTime);
+          console.log("contract :: _Poolno",_Poolno);
+          console.log("contract :: _id",_id);
 
         if(depositBlock == 0)
         return 0;
@@ -168,8 +171,15 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         if(blocks < blocksPerday)
         return 0;
 
-        if(blocks > blocksPerMonth)
-        blocks = blocksPerMonth;
+        if(blocks > blocksPerMonth){
+             unchecked {
+                if(blocksPerMonth + pool[_id][_Poolno].creationTime > depositBlock){
+                 blocks = ( blocksPerMonth + pool[_id][_Poolno].creationTime ) - depositBlock;
+                }else{
+                    return 0;
+                }
+            }
+        }
         
         
         
@@ -178,15 +188,15 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         uint256 totalStaked = pool[_id][_Poolno].totalstaked ;
        // console.log("contract :: totalStaked",totalStaked);
         uint256 totalReceived = pool[_id][_Poolno].rewardTokenValue ;
-      //  console.log("contract :: totalReceived",totalReceived);
+       // console.log("contract :: totalReceived",totalReceived);
         uint256 apyRevenue = (totalReceived * userShare) / totalStaked;
-      //  console.log("contract :: apyRevenue",apyRevenue);
+       // console.log("contract :: apyRevenue",apyRevenue);
+
         
        // (totalReceived * _shares[account]) / _totalShares
         if(apyRevenue == 0 ){
                 return (0);
         }else {
-
         uint256 ratePerDay = ( apyRevenue ) / 30 ;
         return   ( blocks / blocksPerday ) * ratePerDay ;
         
@@ -284,8 +294,8 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
     }
 
     function saveRewards(address account , uint8 _id , uint256 _Poolno ) private {
-        stakeInfo[account][_id][currentPool].depositBlock = block.number;
-        stakeInfo[account][_id][currentPool].pendingRewards += calcRewards(account ,_id ,_Poolno);
+        stakeInfo[account][_id][_Poolno].depositBlock = block.number;
+        stakeInfo[account][_id][_Poolno].pendingRewards += calcRewards(account ,_id ,_Poolno);
     }
 
     function localStake(uint256 amount , uint8 _id ) private returns(uint256){

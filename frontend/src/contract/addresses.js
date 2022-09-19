@@ -1,4 +1,4 @@
 
- export const staking_addr = "0xb868Cc77A95a65F42611724AF05Aa2d3B6Ec05F2"
- export const hestoken_addr = "0x286B8DecD5ED79c962b2d8F4346CD97FF0E2C352"
+ export const staking_addr = "0x4eaB29997D332A666c3C366217Ab177cF9A7C436"
+ export const hestoken_addr = "0x325c8Df4CFb5B068675AFF8f62aA668D1dEc3C4B"
  export const router_addr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
