@@ -1,6 +1,7 @@
 import { useWeb3React } from "@web3-react/core"
 import { useEffect } from "react";
 import { injectedConnector } from "../utils/connectors";
+import {connectWallet} from '../utils/connectWallet'
 
 
 
@@ -12,10 +13,7 @@ export const useEagerConnect = (setErrorMessageFun)=>{
             const isAuthorized = await injectedConnector.isAuthorized();
             console.log("isAuthorized= ",isAuthorized);
             if(isAuthorized) {
-                await activate(injectedConnector, async (error) => {
-                    console.log({ error });
-                    setErrorMessageFun(error.message);
-                });
+                connectWallet(activate,setErrorMessageFun)
             }
         })();
     },[activate,setErrorMessageFun])

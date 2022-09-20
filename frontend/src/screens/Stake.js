@@ -91,8 +91,6 @@ function Stake() {
     }
 }
 
-
-
   const getCurrentPool = async () => {
     try {
       let signer = await loadProvider();
@@ -110,6 +108,7 @@ function Stake() {
         for (let index = 1; index <= _currentPool; index++) {
 
             for (let id = 1; id < 9; id++) {
+              
                 let totalRewardBlance  = await stakingContract.totalReward(account,id,index,id)
                 temp += Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals))
                 console.log("totalRewards",id,Number( ethers.utils.formatUnits(totalRewardBlance.toString(), decimals)))

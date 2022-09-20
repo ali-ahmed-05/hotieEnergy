@@ -21,7 +21,7 @@ function News(){
                     {
                         news.map((item)=>{
                             return (
-                            <Col lg={6} md={6} key={item.id}>
+                            <Col lg={12} md={12} key={item.id}>
                                 <div className="token-section">
                                     <div className="news-height">
                                     <h5 className="title-section">{item.title}</h5>

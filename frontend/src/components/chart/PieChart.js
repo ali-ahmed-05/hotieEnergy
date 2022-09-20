@@ -17,11 +17,10 @@ const PieChartToken = () => {
     ];
 
     const data1 = [
-      { name: 'Unstacked', value: 400 },
-      { name: 'Plus (1)', value: 300 },
-      { name: 'Advance (2)', value: 300 },
-      { name: 'Advance (3)', value: 200 },
-      { name: 'Team', value: 100 },
+      { name: 'Partner', value: 9 },
+      { name: 'supply', value: 51 },
+      { name: 'Minipools', value: 39 },
+      { name: 'Team', value: 1 },
 
     ];
 

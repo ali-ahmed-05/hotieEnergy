@@ -12,7 +12,6 @@ import {
 
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
-import Web3Modal from "web3modal";
 import { loadProvider } from '../../utils/provider';
 import ERROR from "../../utils/error";
 

@@ -58,6 +58,14 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         uint256 pendingRewards;
     }mapping(address => mapping(uint256 =>mapping(uint256 => StakeInfo))) public stakeInfo;
 
+    struct StakeSnapshot{
+        uint256 staked;
+        uint256 enteryTime;
+        uint256 depositBlock;
+    }mapping(address => mapping(uint256  => StakeSnapshot)) public stakeSnapshot;
+
+    
+
     struct DepositInfo{
         uint256 amount;
         uint256 supplyAmount;
@@ -309,16 +317,18 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
             console.log("Contract :: LOCALSTAKE 2");
                 //save rewards
                 saveRewards(_msgSender(),_id ,currentPool);
+                 stakeSnapshot[_msgSender()][currentPool].enteryTime += block.timestamp;
+
+                
             }else{                                    
                 console.log("Contract :: LOCALSTAKE 3");                 // first time
                 pool[_id][currentPool].noOfusers++;
                 detail.enteryTime = block.number;
                 detail.depositBlock = block.number;
+                
             // userPools.push([currentPool,_id]);
             }
 
-
-            
             uint256 result = 0; 
             uint256 difference =0;
             console.log("contract :: localPool 4");
@@ -326,6 +336,10 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
                 console.log("Contract :: LOCALSTAKE 5");
             difference = pool[_id][currentPool].max -  detail.staked ;
             detail.staked += difference;
+
+            stakeSnapshot[_msgSender()][currentPool].staked += difference;
+            stakeSnapshot[_msgSender()][currentPool].depositBlock += block.timestamp;
+            
             pool[_id][currentPool].totalstaked += difference;
             result =  amount - difference;
 
@@ -337,6 +351,7 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
             }
             console.log("Contract :: LOCALSTAKE 7");
             stakeInfo[_msgSender()][_id][currentPool] =  detail;
+            
             return result;
         }else{
             console.log("Contract :: LOCALSTAKE 8");
@@ -378,10 +393,13 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
             pool[_id][currentPool].noOfusers++;
             detail.enteryTime = block.number;
             detail.depositBlock = block.number;
+            stakeSnapshot[_msgSender()][currentPool].enteryTime += block.timestamp;
 
             //userPools.push([currentPool,_id]);
-
         }
+
+        stakeSnapshot[_msgSender()][currentPool].staked += amount;
+        stakeSnapshot[_msgSender()][currentPool].depositBlock += block.timestamp;
 
         detail.staked += amount;
 

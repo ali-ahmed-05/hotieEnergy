@@ -34,7 +34,10 @@ function TokenOverview(){
         error
     } = useWeb3React();
 
+   // const compoundModalProps = {poolTitle, status: compoundModal, handleClose: toggleModalState, handleSelectPool, TotalRewardBalance,hestBalance,stakedBalance,handleClubStake };
     const [detail , setDetail] = useState({})
+    const data = { TotalColumns : detail?.TotalColumns , staked : detail?.userstakedArry }
+
 
 
     const loadProvider = async () => {
@@ -48,8 +51,7 @@ function TokenOverview(){
             console.log("loadProvider: ", e)
         }
     }
-    //stakeInfo
-    //totalReward(address account , uint8 _id , uint256 _Poolno , uint256 _currentPool)
+   
 
     const valuetoRewardToken = async (amount , path , decimals) => {
         try {
@@ -76,19 +78,21 @@ function TokenOverview(){
             currentPool = Number(currentPool.toString())
             let userTotalStaked = 0
             let userTotalClaimable = 0
+            let userstakedArry = []
             for (let index = 1; index <= currentPool; index++) {
                 
                 for (let inn = 1; inn < 9; inn++) {
                     let stakeInfo = await stakingContract.stakeInfo(account,inn,index)
                     let totalReward = await stakingContract.totalReward(account , inn , index , inn)
-                    userTotalStaked += Number(ethers.utils.formatUnits(stakeInfo[0].toString(),decimals))
+                    userstakedArry.push(Number(ethers.utils.formatUnits(stakeInfo[0].toString(),decimals)))
+                    userTotalStaked += userstakedArry[userstakedArry.length-1]
                     userTotalClaimable += Number(ethers.utils.formatUnits(totalReward.toString(),reward_decimals)) 
                     console.log(ethers.utils.formatUnits(stakeInfo[0].toString(),decimals))   
                 }
             }
 
            
-         return {userTotalStaked : userTotalStaked.toString() , userTotalClaimable : userTotalClaimable.toString() , reward_decimals }
+         return {userstakedArry : userstakedArry , currentPool : Number(currentPool) , userTotalStaked : userTotalStaked.toString() , userTotalClaimable : userTotalClaimable.toString() , reward_decimals }
         } catch (error) {
             console.log(error)
         }
@@ -125,6 +129,8 @@ function TokenOverview(){
 
             obj.userStaked = user.userTotalStaked
             obj.userClaimable = user.userTotalClaimable
+            obj.TotalColumns = user.currentPool
+            obj.userstakedArry = user.userstakedArry
 
             obj.userRewardValue = await valuetoRewardToken(userBalance , [hestoken_addr , rewardToken_address],user.reward_decimals)
 
@@ -140,8 +146,7 @@ function TokenOverview(){
     }
 
     useEffect(
-        async () => {
-           
+        async () => {    
             if(account){
                await getDetails()
             }
@@ -162,7 +167,7 @@ function TokenOverview(){
                         <div className="token-section">
                         <div className="investment-history mb-3">
                         <h5>Your Investment History</h5>
-                        <InvestmentHistory/>
+                        <InvestmentHistory {...data}/>
                         </div>
                         </div>
                     </Col>

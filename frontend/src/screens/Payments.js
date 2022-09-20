@@ -7,12 +7,20 @@ import moment from "moment";
 import countdown from 'moment-countdown';
 import { DatePeriodFilter } from "igniteui-react-excel";
 
-import {staking_addr , hestoken_addr , router_addr} from '../contract/addresses'
-import ABI from '../contract/Staking.json'
+import {
+    staking_addr,
+    hestoken_addr,
+    router_addr,
+  } from "../contract/addresses";
+  
+  import ABI from "../contract/Staking.json";
+  import TokenABI from "../contract/HESTOKEN.json";
+  import RouterABI from "../contract/IUniswapV2Router02.json";
 
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import Web3Modal from 'web3modal'
+import {loadProvider} from '../utils/provider'
 
 function Payments(){
 
@@ -28,18 +36,8 @@ function Payments(){
     } = useWeb3React();
 
     const [timecount , setTimecount] = useState('')
+    const [data , setData] = useState([])
 
-    const loadProvider = async () => {
-        try {
-            const web3Modal = new Web3Modal();
-            const connection = await web3Modal.connect();
-            const provider = new ethers.providers.Web3Provider(connection);
-            return provider.getSigner();
-        }
-        catch (e) {
-            console.log("loadProvider: ", e)
-        }
-    }
 
     const currentPoolTime = async () =>{
         try {
@@ -48,10 +46,48 @@ function Payments(){
             let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
             let currentPool = await stakingContract.currentPool()
             let pool = await stakingContract.pool(1,currentPool)
-            
             currentPool = Number(pool[6].toString())
             console.log("currentPool",currentPool)
             return currentPool
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getDetails = async () =>{
+        try {
+
+            let signer = await loadProvider()
+            let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+            let HestContract = new ethers.Contract(hestoken_addr, TokenABI, signer);
+            let decimals = await HestContract.decimals();
+            let currentPool = await stakingContract.currentPool()
+            currentPool = Number(currentPool.toString())
+            
+            let temp = []
+            let start = 1
+            for (let index = start; index <= currentPool; index++) {
+                let depositInfo = await stakingContract.depositInfo(currentPool)
+                let obj = {}
+                obj.DATE_OF_LAST_DEPOSIT = Number(depositInfo[5].toString())
+                obj.TOTAL_LAST_DEPOSIT = ethers.utils.formatEthers(depositInfo[0].toString(), decimals)
+                obj.SUPPORT_HEST = ethers.utils.formatEthers(depositInfo[1].toString(), decimals)
+                obj.PARTNERSHIP = ethers.utils.formatEthers(depositInfo[2].toString(), decimals)
+                obj.TEAM= ethers.utils.formatEthers(depositInfo[3].toString(), decimals)
+                obj.MINIPOOL = ethers.utils.formatEthers(depositInfo[4].toString(), decimals)
+                temp.push(obj)
+                // let snapshot = await stakingContract.stakeSnapshot(account,index)
+                // let _x = ethers.utils.formatUnits( snapshot[0].toString() , decimals)
+                // let timestamp = Number(snapshot[1].toString()) * 1000;
+                // let date = new Date(timestamp);
+                // let _month = date.getMonth();
+                // console.log("snapshot", month)
+                // console.log("snapshot", timestamp)
+                // temp.push(setValues( month[_month - 1] , _x ,0 ,0))
+            }
+            setData(temp)
+            
         } catch (error) {
             console.log(error)
         }
@@ -95,13 +131,18 @@ function Payments(){
         }
     }
 
+
+
     
 
     useEffect(
         async ()=> {
-            await countTime()
+            if(account){
+                await getDetails()
+            }
+           // await countTime()
         }    
-    ,[])
+    ,[account])
 
     return <>
             <Container fluid className="main-height">
@@ -159,22 +200,7 @@ function Payments(){
                             .
                         </div>
                     </div>
-                    <div className="payment-first-flex">
-                        <div>
-                            <span>TOTAL SHARING AMOUNT TO STAKE <span className="green">(HEST)</span>:</span>
-                        </div>
-                        <div className="background-green">
-                            .
-                        </div>
-                    </div>
-                    <div className="payment-first-flex">
-                        <div>
-                            <span>TOTAL SALED <span className="green">(HEST)</span>:</span>
-                        </div>
-                        <div className="background-green">
-                            .
-                        </div>
-                    </div>
+                   
                       </div>
                     </Col>
                     <Col lg={7}>

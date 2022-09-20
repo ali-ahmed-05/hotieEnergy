@@ -33,6 +33,7 @@
   "function set_teamcent(uint256)",
   "function stake(uint8)",
   "function stakeInfo(address,uint256,uint256) view returns (uint256, uint256, uint256, uint256, uint256)",
+  "function stakeSnapshot(address,uint256) view returns (uint256, uint256, uint256)",
   "function stakedBalance(address) view returns (uint256)",
   "function supply() view returns (address)",
   "function supply_cent() view returns (uint256)",
