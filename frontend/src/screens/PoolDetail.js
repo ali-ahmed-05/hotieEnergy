@@ -20,7 +20,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 
 import { loadProvider } from '../utils/provider'
-import apis from "../services";
+import apis from "../services/apis";
 
 
 import ERROR from '../utils/error'
@@ -65,8 +65,8 @@ function PoolDetail(){
     const stake = async ()=> {
         try {
 
-            let min = Number(detail.data.min)
-            let max = Number(detail.data.max)
+            let min = Number(detail?.data.min)
+            let max = Number(detail?.data.max)
 
             console.log("&&&&&&",min)
             console.log("&&&&&&&&",max)
@@ -96,6 +96,7 @@ function PoolDetail(){
             if(tx.confirmations > 0){
                 let add = await stakingContract.stake(ID)
                 await add.wait()
+                await apis.createPoolAddress({ id: ID, number: 1, address: account, balance: amount.toString() })
 
                 setUpdate(update+1)
                 //localHost testing lines
@@ -125,7 +126,7 @@ function PoolDetail(){
             let HestContract = new ethers.Contract(hestoken_addr, TokenABI, signer);
             let HestDecimals = await HestContract.decimals();
 
-            let _unstake  = await stakingContract.unStake(ID , detail.currentPool , ethers.utils.parseUnits(amount.toString() , HestDecimals))
+            let _unstake  = await stakingContract.unStake(ID , detail?.currentPool , ethers.utils.parseUnits(amount.toString() , HestDecimals))
             await _unstake.wait()
 
             setUpdate(update+1)
@@ -154,8 +155,8 @@ function PoolDetail(){
 
             let reward_decimals = await rewardContract.decimals();
             
-            let stakeInfo = await stakingContract.stakeInfo(account,ID,detail.currentPool)
-            let totalReward = await stakingContract.totalReward(account , ID , detail.currentPool , ID)
+            let stakeInfo = await stakingContract.stakeInfo(account,ID,detail?.currentPool)
+            let totalReward = await stakingContract.totalReward(account , ID , detail?.currentPool , ID)
             let userTotalStaked = ethers.utils.formatUnits(stakeInfo[0].toString(),HestDecimals)
             let userTotalClaimable = ethers.utils.formatUnits(totalReward.toString(),reward_decimals)
             setRewards(userTotalClaimable)
@@ -197,35 +198,35 @@ function PoolDetail(){
 
                         <div className="stake-meta-div">
                             <p>MiniPool Selected</p>
-                            <h4 className="head">{detail.poolTitle}</h4>
+                            <h4 className="head">{detail?.poolTitle}</h4>
                         </div>
 
                         <div className="stake-meta-div">
                             <p>MiniPool %</p>
-                            <h4 className="head">{detail.data.cent}</h4>
+                            <h4 className="head">{detail?.data.cent}</h4>
                         </div>
 
                         <div className="stake-meta-div">
                             <p>MiniPool Minimum Holding</p>
-                            <h4 className="head">{detail.data.min}<sub>HEST</sub></h4>
+                            <h4 className="head">{detail?.data.min}<sub>HEST</sub></h4>
                         </div>
 
                         <div className="stake-meta-div">
                             <p>MiniPool Maximum Holding</p>
                             <span>Actual</span>
-                            <h4 className="head">{detail.data.max}<sub>HEST</sub></h4>
+                            <h4 className="head">{detail?.data.max}<sub>HEST</sub></h4>
                         </div>
 
                         <div className="stake-meta-div">
                             <p>MiniPool Rewards</p>
                             <span>Actual</span>
-                            <h4 className="head">{detail.data.rewardTokenValue}<sub>USD</sub></h4>
+                            <h4 className="head">{detail?.data.rewardTokenValue}<sub>USD</sub></h4>
                         </div>
 
                         <div className="stake-meta-div">
                             <p>MiniPool Users joined</p>
                             <span>Actual</span>
-                            <h4 className="head">{detail.data.noOfusers}</h4>
+                            <h4 className="head">{detail?.data.noOfusers}</h4>
                         </div>
 
                         <div className="stake-meta-div">

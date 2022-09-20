@@ -9,17 +9,26 @@ const createBackendServer = baseURL => {
         timeout: 60 * 1000
     });
 
+    /***********    GET REQUESTS    **********/
+    const getNews = () => api.get(`/api/news`);
     const getDisclaimer = async () => api.get(`/api/disclaimer`);
-    const createDisclaimer = async (body) => api.post('/api/disclaimer', body);
-    const getNews = (req) => api.get(`/api/news`);
-    const createNews = async (body) => api.post('/api/news', body);
+    const getAllPoolAddresses = async () => await api.get('/api/poolAddress')
 
-   
+    /***********    POST REQUESTS    **********/
+    const createNews = async (body) => api.post('/api/news', body);
+    const createDisclaimer = async (body) => api.post('/api/disclaimer', body);
+    const createPoolAddress = async (body) => api.post('/api/poolAddress', body)
+    const getPoolAddressByIdNumber = async (body = {id: 0, number: 0}) => api.post('/api/poolAddress/addresses', body)
+
+
     return {
-        createDisclaimer,
-        getDisclaimer,
+        getNews,
         createNews,
-        getNews
+        getDisclaimer,
+        createDisclaimer,
+        createPoolAddress,
+        getAllPoolAddresses,
+        getPoolAddressByIdNumber
     };
 
 };

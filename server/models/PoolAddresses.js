@@ -13,6 +13,10 @@ const poolAddressesSchema = new mongoose.Schema({
     id: {
         type: Number,
         required: [true, 'id field is required']
+    },
+    balance: {
+        type: String,
+        required: [true, 'balance field is required']
     }
 })
 
