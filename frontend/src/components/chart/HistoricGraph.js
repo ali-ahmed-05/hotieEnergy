@@ -3,8 +3,10 @@ import { BarChart, Bar, XAxis, YAxis,
     CartesianGrid, LineChart, Tooltip, Line, PieChart, Pie,ResponsiveContainer } from 'recharts';
 // import {newPlot} from "plotly.js"
   
-const HistoricGraph = () => {
-    const data = [
+const HistoricGraph = ({data}) => {
+    console.log("HistoricGraph",data)
+    
+    const data1 = [
         { name: '2001', x: 12, y: 93, z: 122 },
         { name: '2002', x: 22, y: 3, z: 73 },
         { name: '2004', x: 13, y: 15, z: 32 },
@@ -14,7 +16,6 @@ const HistoricGraph = () => {
         { name: '2009', x: 37, y: 17, z: 61 },
     ];
 
-  
     return (
         <div style={{ width: '100%', height: 400 }}>
             <ResponsiveContainer>

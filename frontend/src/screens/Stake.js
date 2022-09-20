@@ -117,7 +117,9 @@ function Stake() {
 
             }
         }
+        
         console.log("totalRewards",temp)
+
         setTotalRewardBalance(temp.toFixed(5))
         setTotalRewardClaimable(claim.toFixed(5))
         
