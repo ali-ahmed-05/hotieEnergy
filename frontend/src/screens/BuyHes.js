@@ -1,22 +1,26 @@
-import { Col, Container, Row } from "react-bootstrap";
-import bogged from '../assets/images/bogged.png'
-import pancake from '../assets/images/pancake.png'
-import poocoin from '../assets/images/poocoin.png'
-import coinmarketcap from '../assets/images/coinmarketcap.png'
-import coingecko from '../assets/images/coingecko.png'
-import bscscan from '../assets/images/bscscan.png'
+import {Col, Container, Row} from "react-bootstrap";
 import {FinancialChartStockIndexChart} from '../components/Index'
+import _img from "../utils/_img";
 
-function BuyHes(){
+const tokens = [
+    {url: "https://www.bogged.finance/", image: 'bogged.png', label: 'Bogged Finance'},
+    {url: "https://pancakeswap.finance/", image: 'pancake.png', label: 'PancakeSwap Finance'},
+    {url: "https://poocoin.app/", image: 'poocoin.png', label: 'Poocoin'},
+    {url: "https://coinmarketcap.com/", image: 'coinmarketcap.png', label: 'CoinMarketCap'},
+    {url: "https://www.coingecko.com/", image: 'coingecko.png', label: 'Coingecko'},
+    {url: "https://bscscan.com/", image: 'bscscan.png', label: 'BscContract'},
+]
+
+function BuyHes() {
     return <>
-            <Container fluid className="main-height">
-                <Row>
-                    <Col lg={8} md={12}>
-                        <div className="custom-chart-margin">
+        <Container fluid className="main-height">
+            <Row>
+                <Col lg={8} md={12}>
+                    <div className="custom-chart-margin">
                         <FinancialChartStockIndexChart/>
-                        </div>
-                    </Col>
-                    <Col lg={4} md={12}>
+                    </div>
+                </Col>
+                <Col lg={4} md={12}>
                     {/* <div className="trade-section">
                         <p className="text-center head">Trade Tokens in an instant</p>
                         <div className="trade-btn-group">
@@ -54,61 +58,23 @@ function BuyHes(){
                         </div>
                     </div> */}
                     <div className="mint-section">
-                    {/* <a href="https://pancakeswap.finance/" target="_blank" className="custom-btn secondary-btn">Buy</a> */}
-                    <h5 class="btn-like">Buy HES Token</h5>
-
-                    <ul className="buy-hest">
-                        <li>
-                            <a href="https://www.bogged.finance/" target="_blank">
-                                <img src={bogged}/>
-                                <span>Bogged Finance</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="https://pancakeswap.finance/" target="_blank">
-                                <img src={pancake}/>
-                                <span>PancakeSwap Finance</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="https://poocoin.app/" target="_blank">
-                                <img src={poocoin}/>
-                                <span>Poocoin</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="https://coinmarketcap.com/" target="_blank">
-                                <img src={coinmarketcap}/>
-                                <span>CoinMarketCap</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="https://www.coingecko.com/" target="_blank">
-                                <img src={coingecko}/>
-                                <span>Coingecko</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="https://bscscan.com/" target="_blank">
-                                <img src={bscscan}/>
-                                <span>BscContract</span>
-                            </a>
-                        </li>
-
-                    </ul>
-
-{/* 
-                    <a href="https://pancakeswap.finance/" target="_blank" className="custom-btn secondary-btn">Pancakeswap</a>
-                    <a href="https://poocoin.app/" target="_blank" className="custom-btn secondary-btn">Poocoin</a> */}
+                        <h5 class="btn-like">Buy HES Token</h5>
+                        <ul className="buy-hest">
+                            {tokens.map(({url, image, label}, index) => (
+                                <li key={index}>
+                                    <a href={url} target="_blank">
+                                        <img src={_img(image)} alt={label}/>
+                                        <span>{label}</span>
+                                    </a>
+                                </li>
+                            ))
+                            }
+                        </ul>
                     </div>
-                    </Col>
-                </Row>
-            </Container>
+                </Col>
+            </Row>
+        </Container>
     </>
 }
+
 export default BuyHes;
