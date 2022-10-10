@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
 import HorizontalLogo from '../assets/images/horizontal-logo.png';
 import apis from "../services/apis";
 function Disclaimer(){
     const [disclaimers,setDisclaimers] = useState([]);
-  
+    const [limit, setLimit] = useState(2);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0)
+    const navigate = useNavigate();
+    const location = useLocation();
     useEffect(async()=>{
-        const res = await apis.getDisclaimer();
+        const res = await apis.getDisclaimer({ pageSize: limit, page, page });
         setDisclaimers(res.data.disclaimers)
-    },[])
+        setTotalPages(res.data.totalPages)
+    },[page])
+
+    const click = (num) =>{
+        setPage(num)
+        navigate(location.pathname+'?page='+num)
+    }
     return <>
             <Container fluid className="main-height">
                 <div className="page-margin-top">
@@ -28,6 +39,13 @@ function Disclaimer(){
                           })
                     }
                 </Row>
+                <div className="paginate-main">
+                    <ul className="paginate-ul">
+                       
+                        {Array(totalPages).fill(0).map((_, index) => <li onClick={()=>click(index+1)} className={page == index+1 && "active"}>{index+1}</li>)}
+
+                    </ul>
+                </div>
                 </div>
             </Container>
     </>

@@ -52,7 +52,7 @@ function SideBar(props)
         <div className="sidebar-scroll">
         <ul className="sidebar-ul">
             <li className={url == "/" ? "active" :''}>
-                <Link to={"/"} onClick={closeNav}><img src={url == "/" ? GreenHes : Hes}/><span>Buy hes</span></Link>
+                <Link to={"/"} onClick={closeNav}><img src={url == "/" ? GreenHes : Hes}/><span>Buy hest</span></Link>
             </li>
             <li className={url == "/token-overview" ? "active" :''}>
                 <Link to={"/token-overview"} onClick={closeNav}><img src={url == "/token-overview" ? GreenToken : Token}/><span>Token Overview </span></Link>

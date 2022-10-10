@@ -505,13 +505,24 @@ useEffect(async () => {
                         </div>
 
                         <div className="form-check-basis">
-                          <span className="border-bg">{value.cent}%</span>
-                          <span className="border-bg">
+                        <div className="with-label">
+                          <label for="" className="custom-label-new">Percentage</label>
+                          <span className="border-bg d-flex">{value.cent}%</span>
+                        </div>
+                        <div className="with-label">
+                          <label for="" className="custom-label-new">Min Hest</label>
+                          <span className="border-bg d-flex">
                             {value.min} <sub>HEST</sub>
                           </span>
-                          <span className="border-bg">
+                        </div>
+                        <div className="with-label">
+                          <label for="" className="custom-label-new">Max Hest</label>
+                          <span className="border-bg d-flex">
                             {value.max} <sub>HEST</sub>
                           </span>
+                        </div>
+                        <div className="with-label">
+                          <label for="" className="custom-label-new">Input Hest</label>
                           <span className="border-bg d-flex-input">
                             <input
                               type="number"
@@ -524,18 +535,25 @@ useEffect(async () => {
                               }
                               className="input-none-style"
                             />{" "}
-                            <sub>HES</sub>
+                            <sub>HEST</sub>
                           </span>
-                          <span className="border-bg">
+                        </div>
+                        <div className="with-label">
+                          <label for="" className="custom-label-new">Output Amount</label>
+                          <span className="border-bg d-flex">
                             {estimated_value[key]} <sub>USD</sub>
                           </span>
+                        </div>
+                        <div className="with-label">
+                          <label for="" className="custom-label-new text-white"></label>
                           <button
                             type="button"
-                            class="custom-btn secondary-btn"
+                            class="custom-btn secondary-btn d-flex"
                             onClick={() => calculate(key,value.min,value.max)}
                           >
                             Calculate
                           </button>
+                        </div>
                         </div>
                       </div>
                     </>
