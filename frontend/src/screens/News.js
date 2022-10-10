@@ -32,9 +32,23 @@ function News(){
                             )
                           })
                     }
-                   
-                  
                 </Row>
+                <div className="paginate-main">
+                    <ul className="paginate-ul">
+                        <li>
+                            1
+                        </li>
+                        <li>
+                            2
+                        </li>
+                        <li>
+                            3
+                        </li>
+                        <li>
+                            4
+                        </li>
+                    </ul>
+                </div>
                 </div>
             </Container>
     </>

@@ -364,10 +364,10 @@ useEffect(async () => {
                 <h5 class="section-title">Stake - MiniPools</h5>
                 <div className="position-relative">
                   {/* <p className="light-small-p ">Select Month</p> */}
-                  <select className="form-control" style={{ width: "200px" }}>
+                  {/* <select className="form-control" style={{ width: "200px" }}>
                     <option value="">This Month</option>
                     <option value="">Last Month</option>
-                  </select>
+                  </select> */}
                 </div>
               </div>
               <div className="select-minipool mt-4">
@@ -409,11 +409,21 @@ useEffect(async () => {
                     </div>
 
                     <div className="form-check-basis">
-                      <span className="border-bg">{value.cent}%</span>
-                      <span className="border-bg">
+                    <div className="with-label">
+                      <label for="" className="custom-label-new">Percentage</label>
+                      <span className="border-bg d-flex">{value.cent}%</span>
+                    </div>
+                    <div className="with-label">
+                      <label for="" className="custom-label-new">Min Hest</label>
+                      <span className="border-bg d-flex">
                       {value.min} <sub>HEST</sub>
                       </span>
-                      <span className="border-bg">{value.max} <sub>HEST</sub></span>
+                    </div>
+                    <div className="with-label">
+                      <label for="" className="custom-label-new">Max Hest</label>
+                      <span className="border-bg d-flex">{value.max} <sub>HEST</sub></span>
+                    </div>
+                      
                       <button
                         class="custom-btn secondary-btn"
                         onClick={() => navigate(`/pool-detail/${key}`,{state: { data: value, poolTitle : poolTitle[key] , currentPool } })}

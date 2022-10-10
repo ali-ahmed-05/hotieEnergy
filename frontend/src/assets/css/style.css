@@ -1396,3 +1396,27 @@ input[type=number] {
     pointer-events: none;
     cursor: default;
 }
+sub {
+    bottom: -5px !important;
+}
+.custom-label-new{
+    font-size: 12px;
+}
+.form-check-basis .with-label{
+flex-basis: 40%;
+}
+.form-check-basis .with-label:first-child{
+margin-right: 2rem;
+}
+.admin .form-check-basis .with-label span{
+flex-basis: unset !important;
+}
+.paginate-ul{
+    list-style: none;
+    display: flex;
+    padding-left: 0;
+}
+.paginate-ul li{
+    background-color: var(--light-background);
+    padding: 0.5rem 1rem;
+}
