@@ -1,3 +1,3 @@
-export const staking_addr = "0x4eaB29997D332A666c3C366217Ab177cF9A7C436"
-export const hestoken_addr = "0x325c8Df4CFb5B068675AFF8f62aA668D1dEc3C4B"
-export const router_addr = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
+export const staking_addr = "0x4dba268e361bcf349721e68c8403df241e267880"
+export const hestoken_addr = "0x04ca599CdF129c16932957fBD3b2240341b217a2"
+export const router_addr = "0x9ac64cc6e4415144c455bd8e4837fea55603e5c3"
