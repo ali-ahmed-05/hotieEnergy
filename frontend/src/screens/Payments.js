@@ -94,7 +94,7 @@ function Payments() {
                 let _month = date.getMonth();
                 console.log("depositInfo", month)
                 console.log("depositInfo", timestamp)
-                temp1.push(setValues(month[_month - 1], _x, _y, 0))
+                temp1.push(setValues(month[_month ], _x, _y, 0))
 
             }
             console.log("data", temp)
@@ -158,16 +158,17 @@ function Payments() {
 
     const countTime = async () => {
         try {
-
             const {data} = await apis.getBlock(await currentPoolTime())
-            const timeStamp = data?.result?.timeStamp || 0;
-            let oneMonthUNIX = 2629743
+            console.log("data", data)
+            const timeStamp =  data?.result?.timeStamp || 0;//0
+            let oneMonthUNIX = 2163
             let totalTime = Number(timeStamp) + oneMonthUNIX
             console.log("NOW", moment().unix())
+            console.log("NOW", timeStamp)
             if (totalTime < moment().unix())
                 totalTime = 0
 
-            console.log(totalTime)
+            console.log("3  ",totalTime)
             let date = moment.unix(Number(totalTime));
             //a.to(date)
 
@@ -181,7 +182,7 @@ function Payments() {
 
                     setTimeCount(moment().countdown(date))
 
-                    // console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                    console.log("2timeStamp" ,moment().countdown(date)) 
                     // console.log("2timeStamp" ,moment().countdown(date).toString()) 
                     // console.log("3timeStamp" ,moment().countdown(date , countdown.MONTHS|countdown.WEEKS, NaN, 2).toString()) 
 
@@ -199,7 +200,15 @@ function Payments() {
             if (account) {
                 await getDetails()
             }
-            // await countTime()
+        }
+        , [account])
+
+    useEffect(
+        async () => {
+            if (account) {
+                await countTime()
+            }
+             
         }
         , [account])
 
@@ -262,10 +271,10 @@ function Payments() {
                                             <span>SEC</span>
                                         </div>
                                         <div className="green-background timer-section">
-                                            <span>{timeCount.days}</span>
-                                            <span>{timeCount.hours}</span>
-                                            <span>{timeCount.minutes}</span>
-                                            <span>{timeCount.seconds}</span>
+                                            <span>{timeCount?.days !== undefined  ? timeCount?.months > 0 ?  30*timeCount?.months: timeCount?.days : 0}</span>
+                                            <span>{timeCount?.hours !== undefined ? timeCount?.hours :0}</span>
+                                            <span>{timeCount?.minutes !== undefined ? timeCount?.minutes :0}</span>
+                                            <span>{timeCount?.seconds !== undefined ? timeCount?.seconds :0}</span>
                                         </div>
                                     </div>
                                 </div>

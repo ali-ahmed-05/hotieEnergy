@@ -8,6 +8,7 @@
   "function blocksPerMonth() view returns (uint256)",
   "function blocksPerday() view returns (uint256)",
   "function calcRewards(address,uint8,uint256) view returns (uint256)",
+  "function calculator(uint256,uint8,uint256) view returns (uint256)",
   "function clubRewards(address,bool,uint8[])",
   "function currentPool() view returns (uint256)",
   "function daysPerMonth() view returns (uint256)",

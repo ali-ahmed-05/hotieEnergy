@@ -31,14 +31,14 @@ function Admin() {
                                 </Link>
 
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to={'#'}>
 
                                     <img src={BuySell} />
                                     <span>ADJUST BUY/SELL<br /> COMISSIONS</span>
                                 </Link>
 
-                            </li>
+                            </li> */}
                             <li>
                                 <Link to={'/admin/withdraw-wallet-team'}>
 
@@ -55,37 +55,37 @@ function Admin() {
                                 </Link>
 
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to={'#'}>
 
                                     <img src={Amount} />
                                     <span>MODIFY DeFi<br /> AMOUNT</span>
                                 </Link>
 
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to={'#'}>
 
                                     <img src={Dollar} />
                                     <span>MODIFY CeFi<br /> AMOUNT</span>
                                 </Link>
 
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to={'#'}>
                                     <img src={MakePayment} />
                                     <span>MAKE <br /> PAYMENT</span>
                                 </Link>
 
-                            </li>
-                            <li>
+                            </li> */}
+                            {/* <li>
                                 <Link to={'#'}>
 
                                     <img src={Calender} />
                                     <span>SET PAYMENT <br /> DATE</span>
                                 </Link>
 
-                            </li>
+                            </li> */}
                             <li>
                                 <Link to={'/admin/adjust/pool'}>
                                     <img src={Pool} />

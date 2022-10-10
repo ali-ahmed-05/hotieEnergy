@@ -13,6 +13,9 @@ import Web3Modal from 'web3modal'
 import ERROR from '../../utils/error'
 import {loadProvider} from '../../utils/provider'
 
+import moment from "moment";
+import apis from "../../services";
+
 
 
 function AdjustPool(){
@@ -28,6 +31,7 @@ function AdjustPool(){
         error
     } = useWeb3React();
 
+    const [timeCount, setTimeCount] = useState('')
     const [percentages , setPercentages] = useState([5,5,5,10,10,20,20,25])
     const [min , setMin] = useState([25,2500,9000,19000,35000,58000,100000,176000])//([25,2500,9000,19000,35000,58000,100000,176000])
     const [max , setMax] = useState([1500,5000,12000,28000,40000,90000,120000,800000000])
@@ -170,6 +174,68 @@ function AdjustPool(){
        
     }
 }
+
+const currentPoolTime = async () => {
+    try {
+
+        let signer = await loadProvider()
+        let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+        let currentPool = await stakingContract.currentPool()
+        let pool = await stakingContract.pool(1, currentPool)
+        currentPool = Number(pool[6].toString())
+        console.log("currentPool", currentPool)
+        return currentPool
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+  const countTime = async () => {
+    try {
+        const {data} = await apis.getBlock(await currentPoolTime())
+        console.log("data", data)
+        const timeStamp =  data?.result?.timeStamp || 0;//0
+        let oneMonthUNIX = 2163
+        let totalTime = Number(timeStamp) + oneMonthUNIX
+        console.log("NOW", moment().unix())
+        console.log("NOW", timeStamp)
+        if (totalTime < moment().unix())
+            totalTime = 0
+
+        console.log("3  ",totalTime)
+        let date = moment.unix(Number(totalTime));
+        //a.to(date)
+
+        console.log("2timeStamp", moment().countdown(date))
+        console.log("moment().countdown(date).value", moment().countdown(date).value)
+
+        if (moment().countdown(date).value > 0) {
+            console.log("INNS")
+
+            const id = setInterval(() => {
+
+                setTimeCount(moment().countdown(date))
+
+                console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                // console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                // console.log("3timeStamp" ,moment().countdown(date , countdown.MONTHS|countdown.WEEKS, NaN, 2).toString()) 
+
+
+            }, 1000);
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+useEffect(async () => {
+  if(account){
+    await countTime()
+  }
+  
+}, [account]);
+
     
 
     useEffect(()=>{
@@ -223,7 +289,7 @@ function AdjustPool(){
                                     <button class=" border-bg" onClick={addRewardToken}>Add Coin</button>
                                     <div className="position-relative">
                                         <p className="light-small-p absolute-p">REMAINING TIME TO CLOSE</p>
-                                        <span className="border-bg">00 : 00 : 00 : 00</span>
+                                        <span className="border-bg">{timeCount?.days !== undefined  ? timeCount?.months > 0 ?  30*timeCount?.months: timeCount?.days : 0} : {timeCount?.hours !== undefined ? timeCount?.hours :"00"} : {timeCount?.minutes !== undefined ? timeCount?.minutes :"00"} : {timeCount?.seconds !== undefined ? timeCount?.seconds :"00"}</span>
                                     </div>
                                 </div>
 

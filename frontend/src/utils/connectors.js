@@ -9,8 +9,9 @@ export const supportedChainIds = [
     
     //1, // Mainet
    
-    4, // Rinkeby
+    97, // BCS smart chain
     56, // BCS smart chain
+    4, // Rinkeby
     3, // Ropsten
     1337,
     // 5, // Goerli

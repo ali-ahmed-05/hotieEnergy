@@ -25,6 +25,8 @@ import CompoundModal from "../components/modals/CompoundModal";
 import { loadProvider } from '../utils/provider'
 import ERROR from "../utils/error";
 
+import moment from "moment";
+
 function Stake() {
   const [pools, setPools] = useState([]);
   const poolTitle = ["Adnvace 3","Adnvace 2","Adnvace 1", "Advantage 2" , "Advantage 1" ,"Plus 2" ,"Plus 1","Prestige"]
@@ -39,6 +41,7 @@ function Stake() {
   const [compoundModal, setCompoundModal] = useState(false);
   const [selectedPools, setSelectedPools] = useState([]);
   const [poolrewards , setpoolrewards] = useState(0)
+  const [timeCount, setTimeCount] = useState('')
 
   const toggleModalState = () => setCompoundModal(prevState => !prevState);
 
@@ -208,9 +211,72 @@ function Stake() {
     }
   };
 
+  const currentPoolTime = async () => {
+    try {
+
+        let signer = await loadProvider()
+        let stakingContract = new ethers.Contract(staking_addr, ABI, signer);
+        let currentPool = await stakingContract.currentPool()
+        let pool = await stakingContract.pool(1, currentPool)
+        currentPool = Number(pool[6].toString())
+        console.log("currentPool", currentPool)
+        return currentPool
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+  const countTime = async () => {
+    try {
+        const {data} = await apis.getBlock(await currentPoolTime())
+        console.log("data", data)
+        const timeStamp =  data?.result?.timeStamp || 0;//0
+        let oneMonthUNIX = 2163
+        let totalTime = Number(timeStamp) + oneMonthUNIX
+        console.log("NOW", moment().unix())
+        console.log("NOW", timeStamp)
+        if (totalTime < moment().unix())
+            totalTime = 0
+
+        console.log("3  ",totalTime)
+        let date = moment.unix(Number(totalTime));
+        //a.to(date)
+
+        console.log("2timeStamp", moment().countdown(date))
+        console.log("moment().countdown(date).value", moment().countdown(date).value)
+
+        if (moment().countdown(date).value > 0) {
+            console.log("INNS")
+
+            const id = setInterval(() => {
+
+                setTimeCount(moment().countdown(date))
+
+                console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                // console.log("2timeStamp" ,moment().countdown(date).toString()) 
+                // console.log("3timeStamp" ,moment().countdown(date , countdown.MONTHS|countdown.WEEKS, NaN, 2).toString()) 
+
+
+            }, 1000);
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+useEffect(async () => {
+  if(account){
+    await countTime()
+  }
+  
+}, [account]);
+
   useEffect(async () => {
     await poolDetail(await loadProvider());
   }, [account]);
+
+ 
 
   const navigate = useNavigate();
   return (
@@ -319,10 +385,14 @@ function Stake() {
                     <p className="light-small-p absolute-p">
                       REMAINING TIME TO CLOSE
                     </p>
-                    <span className="border-bg">00 : 00 : 00 : 00</span>
+                    <span className="border-bg">{timeCount?.days !== undefined  ? timeCount?.months > 0 ?  30*timeCount?.months: timeCount?.days : 0} : {timeCount?.hours !== undefined ? timeCount?.hours :"00"} : {timeCount?.minutes !== undefined ? timeCount?.minutes :"00"} : {timeCount?.seconds !== undefined ? timeCount?.seconds :"00"}</span>
                   </div>
                 </div>
               </div>
+              {/* <span>{timeCount?.days !== undefined ? timeCount?.days : 0}</span>
+                                            <span>{timeCount?.hours !== undefined ? timeCount?.hours :0}</span>
+                                            <span>{timeCount?.minutes !== undefined ? timeCount?.minutes :0}</span>
+                                            <span>{timeCount?.seconds !== undefined ? timeCount?.seconds :0}</span> */}
 
               <Form className="minipool-form">
                 {/* <input class="form-check-input" type="checkbox" value="" id="check1"/> */}
@@ -555,13 +625,7 @@ function Stake() {
             <div className="trade-section">
               <p className="head">Recommended MiniPools</p>
 
-              <div className="time-refresh">
-                <p>ESTIMATED TIME TO REFRESH</p>
-                <div className="stake-time">
-                  <span>MIN &nbsp; SEC</span>
-                  <span>00 : 00</span>
-                </div>
-              </div>
+            
 
               <div className="stake-meta">
                 <div className="stake-meta-div">

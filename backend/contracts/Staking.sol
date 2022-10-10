@@ -109,6 +109,16 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
         HESTTOKEN = _HESTTOKEN;
     }
 
+    function setTeamAddress(address _team) public onlyOwner {
+        require(_team != address(0),"invalid address");
+        team = _team;
+    }
+
+    function setPartnerAddress(address _partner) public onlyOwner {
+        require(_partner != address(0),"invalid address");
+        partner = _partner;
+    }
+
     function set_supplycent(uint256 _cent) public onlyOwner {
         require(_cent != 0 && _cent + team_cent + partner_cent + digitHolder_cent <= 100, "invalid uint256");
         supply_cent = _cent;
@@ -168,10 +178,10 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
 
 
 
-          console.log("contract :: depositBlock",depositBlock);
-          console.log("contract :: creationTime",pool[_id][_Poolno].creationTime);
-          console.log("contract :: _Poolno",_Poolno);
-          console.log("contract :: _id",_id);
+        console.log("contract :: depositBlock",depositBlock);
+        console.log("contract :: creationTime",pool[_id][_Poolno].creationTime);
+        console.log("contract :: _Poolno",_Poolno);
+        console.log("contract :: _id",_id);
 
         if(depositBlock == 0)
         return 0;
@@ -199,6 +209,44 @@ contract Staking is Ownable , Pausable , ReentrancyGuard {
        // console.log("contract :: totalReceived",totalReceived);
         uint256 apyRevenue = (totalReceived * userShare) / totalStaked;
        // console.log("contract :: apyRevenue",apyRevenue);
+
+        
+       // (totalReceived * _shares[account]) / _totalShares
+        if(apyRevenue == 0 ){
+                return (0);
+        }else {
+        uint256 ratePerDay = ( apyRevenue ) / 30 ;
+        return   ( blocks / blocksPerday ) * ratePerDay ;
+        
+        }
+
+    }
+
+    function calculator(uint256 amount , uint8 _id ,uint256 _Poolno) public view returns (uint256) { // remaining
+        
+        //StakeInfo memory detail = stakeInfo[account][_id][_Poolno];
+        Pool memory detail = pool[_id][_Poolno];
+        uint256 currentblock = block.number;
+        uint256 totalBlocks = detail.creationTime + blocksPerMonth;
+        // new
+        console.log("contract :: _id",_id);
+        uint256 blocks = 0;
+        if(currentblock < totalBlocks)
+        blocks = totalBlocks - currentblock;
+        console.log("contract :: _id",_id);
+       
+        if(blocks < blocksPerday)
+        return 0;
+        console.log("contract :: _id",_id);
+        uint256 userShare = amount;
+        console.log("contract :: userShare",userShare);
+        uint256 totalStaked = pool[_id][_Poolno].totalstaked + amount ;
+        
+        console.log("contract :: totalStaked",totalStaked);
+        uint256 totalReceived = pool[_id][_Poolno].rewardTokenValue ;
+        console.log("contract :: totalReceived",totalReceived);
+        uint256 apyRevenue = (totalReceived * userShare) / totalStaked;
+        console.log("contract :: apyRevenue",apyRevenue);
 
         
        // (totalReceived * _shares[account]) / _totalShares

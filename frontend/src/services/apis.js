@@ -33,7 +33,7 @@ const createBackendServer = baseURL => {
 
 };
 
-const apis = createBackendServer('http://localhost:5000');
+const apis = createBackendServer(process.env.REACT_APP_API_URL);
 
 
 export default apis;

@@ -112,7 +112,7 @@ function Team(){
                 let _month = date.getMonth();
                 console.log("depositInfo", month)
                 console.log("depositInfo", timestamp)
-                temp1.push(setValues( month[_month - 1] , _x ,_y ,0))
+                temp1.push(setValues( month[_month] , _x ,_y ,0))
 
             }
             console.log("data" , temp)

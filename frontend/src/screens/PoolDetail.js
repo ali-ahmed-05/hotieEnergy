@@ -186,13 +186,7 @@ function PoolDetail(){
 
                         <p className="head">Selected MiniPool</p>
                         
-                        <div className="time-refresh">
-                            <p>ESTIMATED TIME TO REFRESH</p>
-                            <div className="stake-time">
-                            <span>MIN &nbsp; SEC</span>
-                            <span>00 : 00</span>
-                            </div>
-                        </div>
+                        
 
                         <div className="stake-meta">
 

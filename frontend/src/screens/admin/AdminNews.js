@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Col, Container, Row,Table, Form } from "react-bootstrap";
 import Hest from '../../assets/images/hest.png';
 import apis from "../../services/apis";
+
 const AdminNews = () => {
     const [title,setTitle] = useState('');
     const [description,setDescription] = useState('');

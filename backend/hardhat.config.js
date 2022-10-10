@@ -51,7 +51,8 @@ module.exports = {
       chainId: 1337,
       gasPrice: 225000000000,
       forking: {
-          url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API}`,
+       //   url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API}`,
+          url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
           enabled: true,
       },
     },
