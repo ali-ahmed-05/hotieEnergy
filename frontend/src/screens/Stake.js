@@ -423,13 +423,15 @@ useEffect(async () => {
                       <label for="" className="custom-label-new">Max Hest</label>
                       <span className="border-bg d-flex">{value.max} <sub>HEST</sub></span>
                     </div>
-                      
+                    <div className="with-label">
+                      <label for="" className="custom-label-new"></label>
                       <button
-                        class="custom-btn secondary-btn"
+                        class="custom-btn secondary-btn d-flex"
                         onClick={() => navigate(`/pool-detail/${key}`,{state: { data: value, poolTitle : poolTitle[key] , currentPool } })}
                       >
                         Join
                       </button>
+                    </div>
                     </div>
                   </div>
                    </>

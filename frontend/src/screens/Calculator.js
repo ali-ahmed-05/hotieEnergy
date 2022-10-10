@@ -540,17 +540,20 @@ useEffect(async () => {
                         </div>
                         <div className="with-label">
                           <label for="" className="custom-label-new">Output Amount</label>
-                          <span className="border-bg">
+                          <span className="border-bg d-flex">
                             {estimated_value[key]} <sub>USD</sub>
                           </span>
                         </div>
+                        <div className="with-label">
+                          <label for="" className="custom-label-new text-white"></label>
                           <button
                             type="button"
-                            class="custom-btn secondary-btn"
+                            class="custom-btn secondary-btn d-flex"
                             onClick={() => calculate(key,value.min,value.max)}
                           >
                             Calculate
                           </button>
+                        </div>
                         </div>
                       </div>
                     </>
