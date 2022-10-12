@@ -34,6 +34,28 @@ const getPoolAddressByIdNumber = asyncHandler(async (req, res) => {
 })
 
 /*
+@desc     GET Addresses of Particular Address
+@route    POST /api/poolAddress/:addresses
+@access   Public
+*/
+const getParticularPoolAddress = asyncHandler(async (req, res) => {
+    const {address} = req.params;
+
+    console.log(address)
+
+    if(!address) {
+        return res.status(400).send({status: false, message: 'address is required in params'});
+    }
+
+    const poolAddresses = await PoolAddresses.find({address: address});
+
+    if (poolAddresses.length > 0) {
+        return res.status(200).send({status: true, data: poolAddresses, message: 'Pool Addresses Successfully fetched'})
+    }
+
+    res.status(200).send({status: true, message: 'Pool Addresses does not found'})
+})
+/*
 @desc     Create new  Pool Address
 @route    POST /api/poolAddress
 @access   Public
@@ -48,4 +70,4 @@ const createPoolAddress = asyncHandler(async (req, res) => {
 })
 
 
-export {getAllPoolAddresses, getPoolAddressByIdNumber, createPoolAddress}
+export {getAllPoolAddresses, getPoolAddressByIdNumber, createPoolAddress,getParticularPoolAddress}
