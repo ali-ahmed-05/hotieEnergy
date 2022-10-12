@@ -100,7 +100,7 @@ function PoolDetail(){
 
                 setUpdate(update+1)
                 //localHost testing lines
-                await mineNBlocks(24 * 15)
+            //    await mineNBlocks(24 * 15)
             }
 
             }else{
@@ -171,7 +171,7 @@ function PoolDetail(){
         async ()=>{
             if(ID!==0 && library){
                 await userDetail()
-                await mineNBlocks(1)
+                //await mineNBlocks(1)
             }
         }
     ,[account , library , update])

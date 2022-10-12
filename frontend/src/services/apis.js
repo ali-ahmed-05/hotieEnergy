@@ -10,8 +10,8 @@ const createBackendServer = baseURL => {
     });
 
     /***********    GET REQUESTS    **********/
-    const getNews = () => api.get(`/api/news`);
-    const getDisclaimer = async () => api.get(`/api/disclaimer`);
+    const getNews = async ({page}) => api.get(`/api/news?page=${page}`);
+    const getDisclaimer = async ({page}) => api.get(`/api/disclaimer?page=${page}`);
     const getAllPoolAddresses = async () => await api.get('/api/poolAddress')
 
     /***********    POST REQUESTS    **********/

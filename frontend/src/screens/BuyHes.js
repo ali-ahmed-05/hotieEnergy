@@ -58,7 +58,7 @@ function BuyHes() {
                         </div>
                     </div> */}
                     <div className="mint-section">
-                        <h5 class="btn-like">Buy HES Token</h5>
+                        <h5 class="btn-like">Buy HEST Token</h5>
                         <ul className="buy-hest">
                             {tokens.map(({url, image, label}, index) => (
                                 <li key={index}>

@@ -309,10 +309,25 @@ useEffect(async () => {
                                         </div>
                                         
                                         <div className="form-check-basis">
-                                        <span className="border-bg"><input type="number" placeholder={percentages[index] + "%"} onChange = {(e)=> changePercentage(index , e.target.value)} className="input-none-style"/></span>
-                                            <span className="border-bg d-flex-input"><input type="number" placeholder={min[index]} onChange = {(e)=> changeMin(index , e.target.value)} className="input-none-style"/> <sub>HES</sub></span>
-                                            <span className="border-bg d-flex-input"><input type="number" placeholder={max[index]} onChange = {(e)=> changeMax(index , e.target.value)} className="input-none-style"/> <sub>HES</sub></span>
+                                        <div className="with-label">
+                                        <label for="" className="custom-label-new">Percentage</label>
+                                        <span className="border-bg d-flex">
+                                            <input type="number" placeholder={percentages[index] + "%"} onChange = {(e)=> changePercentage(index , e.target.value)} className="input-none-style"/>
+                                        </span>
                                         </div>
+                                        <div className="with-label">
+                                        <label for="" className="custom-label-new">Min Hest</label>
+
+                                        <span className="border-bg d-flex-input"><input type="number" placeholder={min[index]} onChange = {(e)=> changeMin(index , e.target.value)} className="input-none-style"/> <sub>HEST</sub></span>
+
+                                        </div>
+                                        <div className="with-label">
+                                        <label for="" className="custom-label-new">Max Hest</label>
+
+                                            <span className="border-bg d-flex-input"><input type="number" placeholder={max[index]} onChange = {(e)=> changeMax(index , e.target.value)} className="input-none-style"/> <sub>HEST</sub></span>
+                                        </div>
+                                        </div>
+
                                     </div>
                                     ))}
                               
