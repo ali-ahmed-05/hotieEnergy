@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import HorizontalLogo from '../assets/images/horizontal-logo.png'
 import apis from "../services/apis";
 
 function News() {
-    const [news, setNews] = useState([]);
-    const [limit, setLimit] = useState(2);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0)
     const navigate = useNavigate();
     const location = useLocation();
+    let [searchParams, setSearchParams] = useSearchParams();
+    const [news, setNews] = useState([]);
+    const [limit, setLimit] = useState(2);
+    const [page, setPage] = useState(searchParams.get('page') ? searchParams.get('page') : 1);
+    const [totalPages, setTotalPages] = useState(0)
     useEffect(() => {
         (async () => {
             const res = await apis.getNews({ pageSize: limit, page, page });
