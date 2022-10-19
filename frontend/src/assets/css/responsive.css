@@ -92,7 +92,14 @@
 
 }
 @media (max-width: 767px) {
-
+    .form-check-basis{
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .form-check-basis .with-label {
+        flex-basis: unset;
+        max-width: 50%;
+    }
     
 .border-bg {
     padding: 2px 13px;
@@ -216,6 +223,9 @@
 
     .close-sidebar-icon{
         display: block;
+    }
+    .form-check-basis span, .form-check-basis button {
+        padding: 5px 18px;
     }
 
 }
